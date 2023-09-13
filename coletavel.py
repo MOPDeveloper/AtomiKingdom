@@ -14,10 +14,13 @@ verde = (0, 255, 0)
 azul = (0,0,255)
 vermelho = (255,0,0)
 
+clock = pygame.time.Clock()
+FPS = 90 
+
 class Player:
     def __init__(self):
         self.rect = pygame.Rect(50, 50, 40, 40)
-        self.speed = 1
+        self.speed = 7
 
     def mover(self, teclas):
         if teclas[pygame.K_LEFT]:
@@ -48,7 +51,7 @@ class Moeda:
         self.rect.x = random.randint(0, largura - 20)
         self.rect.y = random.randint(0, altura - 20)
 
-class MoedaAzul:
+class MoedaAzul: #SPEED 
     def __init__(self):
         self.rect = pygame.Rect(0, 0, 20, 20)
         self.nova_posicao()
@@ -75,12 +78,15 @@ class Jogo:
         self.contagem_moedas = 0
         self.contagem_moedasAzul = 0
         self.contagem_moedasVermelhas = 0
+        
+        
 
     def atualizar(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            
 
         teclas = pygame.key.get_pressed()
         self.player.mover(teclas)
@@ -97,6 +103,11 @@ class Jogo:
         if self.player.rect.colliderect(self.moedaazul.rect):
             self.contagem_moedasAzul += 1
             self.moedaazul.nova_posicao()
+        
+            
+        clock = pygame.time.Clock()
+        FPS = 90 
+        clock.tick(FPS)
 
     def desenhar(self):
         tela.fill(branco)
@@ -116,7 +127,7 @@ class Jogo:
 
         tela.blit(texto, (10, 10))
         tela.blit(texto2, (250, 10))
-        tela.blit(texto3, (500, 10))
+        tela.blit(texto3, (490, 10))
 
 
         pygame.display.update()
@@ -125,7 +136,7 @@ jogo = Jogo()
 
 # Loop principal do jogo
 while True:
-    
     jogo.atualizar()
     jogo.desenhar()
-    
+
+    pygame.display.flip()
