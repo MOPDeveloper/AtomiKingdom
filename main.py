@@ -1,6 +1,7 @@
 import pygame
 from Bombas import Bomba
 from Moedas import Moeda, MoedaAzul, MoedaVermelha
+from player import Player
 
 # Inicialização do Pygame
 pygame.init()
@@ -19,31 +20,6 @@ preto = (0, 0, 0)
 
 clock = pygame.time.Clock()
 FPS = 90
-
-class Player:
-    def __init__(self):
-        self.rect = pygame.Rect(50, 50, 40, 40)
-        self.speed = 7
-
-    def mover(self, teclas):
-        if teclas[pygame.K_LEFT]:
-            self.rect.x -= self.speed
-        if teclas[pygame.K_RIGHT]:
-            self.rect.x += self.speed
-        if teclas[pygame.K_UP]:
-            self.rect.y -= self.speed
-        if teclas[pygame.K_DOWN]:
-            self.rect.y += self.speed
-
-    def limites(self, largura, altura):
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > largura:
-            self.rect.right = largura
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > altura:
-            self.rect.bottom = altura
 
 class Obstaculos:
     def __init__(self):
@@ -142,14 +118,13 @@ class Jogo:
         FPS = 90
         clock.tick(FPS)
 
+    #Desenhando os objetos
     def desenhar(self):
         tela.fill(preto)
-
-        pygame.draw.rect(tela, verde, self.player.rect)
-        pygame.draw.ellipse(tela, verde, self.moeda.rect)
-        pygame.draw.ellipse(tela, azul, self.moedaazul.rect)
-        pygame.draw.ellipse(tela, vermelho, self.moedavermelha.rect)
-
+        self.player.desenhar(tela)
+        self.moeda.desenhar(tela)
+        self.moedaazul.desenhar(tela)
+        self.moedavermelha.desenhar(tela)
         self.obstaculos.desenhar_obstaculos(tela)
 
         if self.bomba_ativa:
