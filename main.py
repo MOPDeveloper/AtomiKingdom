@@ -136,6 +136,7 @@ class Jogo:
         if self.player.rect.colliderect(self.moedaazul.rect):
             self.contagem_moedasAzul += 1
             self.moedaazul.nova_posicao()
+            self.player.speed += 1
 
         clock = pygame.time.Clock()
         FPS = 90
@@ -157,12 +158,12 @@ class Jogo:
 
         fonte = pygame.font.Font(None, 36)
         texto = fonte.render(f"Moedas Verdes: {self.contagem_moedas}", True, verde)
-        texto2 = fonte.render(f"Moedas Azuis: {self.contagem_moedasAzul}", True, azul)
+        texto2 = fonte.render(f"Bônus Velocidade: {self.contagem_moedasAzul}", True, azul)
         texto3 = fonte.render(f"Moedas Vermelhas: {self.contagem_moedasVermelhas}", True, vermelho)
 
         tela.blit(texto, (10, 10))
         tela.blit(texto2, (250, 10))
-        tela.blit(texto3, (490, 10))
+        tela.blit(texto3, (530, 10))
 
         pygame.display.update()
 
