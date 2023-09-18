@@ -1,5 +1,5 @@
 import pygame
-
+from Bombas import Bomba
 from Moedas import Moeda, MoedaAzul, MoedaVermelha
 
 # Inicialização do Pygame
@@ -79,13 +79,14 @@ class Obstaculos:
                                 jogo.player.rect.top = obstaculo.bottom
                     jogo.colidiu_com_obstaculo = True
 
-class Bomba:
+"""class Bomba:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 20, 20)  # Tamanho da bomba
         self.color = vermelho  # Cor da bomba
 
     def desenhar(self, tela):
-        pygame.draw.rect(tela, self.color, self.rect)
+        pygame.draw.rect(tela, self.color, self.rect)"""
+
 
 class Jogo:
     def __init__(self):
