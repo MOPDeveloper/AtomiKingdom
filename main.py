@@ -42,8 +42,10 @@ class Jogo:
         self.contagem_moedasAzul = 0
         self.contagem_moedasVermelhas = 0
 
-        self.bomba = None  # Variável para armazenar a bomba
-        self.bomba_ativa = False  # Variável de controle para saber se a bomba está ativa
+        self.nova_bomba = None  # Variável para armazenar a bomba
+        self.bomba_ativa = False
+        self.bombas_ativas = []
+        self.bombas_invativas = []  # Variável de controle para saber se a bomba está ativa
 
         # Inicialize a lista de obstáculos usando a classe Obstaculos
         self.obstaculos = Obstaculos()
@@ -55,7 +57,7 @@ class Jogo:
                 quit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                 # Cria uma instância da bomba no lugar do jogador
-                self.bomba = Bomba(self.player.rect.x+ 20, self.player.rect.y + 20)
+                self.nova_bomba = Bomba(self.player.rect.x+ 20, self.player.rect.y + 20)
                 self.bomba_ativa = True
 
         teclas = pygame.key.get_pressed()
@@ -97,7 +99,7 @@ class Jogo:
         self.obstaculos.desenhar(tela)
 
         if self.bomba_ativa:
-            self.bomba.desenhar(tela)
+            self.nova_bomba.desenhar(self.player.rect.x,self.player.rect.y,tela)
             
 
         fonte = pygame.font.Font(None, 36)

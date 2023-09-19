@@ -1,4 +1,5 @@
 import pygame
+from obstaculo import Obstaculos
 
 class Bomba:
     """
@@ -12,9 +13,11 @@ class Bomba:
         self.comprimento = 20
         self.quadrado = pygame.Rect(x,y,self.largura,self.comprimento)
         self.rect = self.quadrado
-        self.active = False
+        self.expandiu = False
 
-        self.tempo = 2.5
+        self.obstaculos = Obstaculos()
+
+        self.tempo = 2500 #SEGUNDOS PARA A BOMBA EXPLODIR
         self.color = (255,0,0)
 
         self.left = False
@@ -22,41 +25,72 @@ class Bomba:
         self.up = False
         self.down = False
 
-        self.posições = []
+    """CALCULA O TEMPO PARA EXPLODIR"""
+    def atualizar(self):
+        agora = pygame.time.get_ticks()
+        #VAI VERIFICAR SE PASSOU O TEMPO QUE A BOMBA TEM QUE EXPLODIR
+        if agora >= self.tempo:
+            self.expandiu = True
+            self.explosao = self.calcular_explosao()
+            return self.explosao
 
-    """def active_bomb(self,x,y):
-        self.rect.center = (x,y)
-        self.active = True"""
 
     """FUNÇÃO QUE VAI VERIFICAR SE A EXPANSÃO DA BOMBA BATEU EM ALGUM BLOCO INQUEBRAVEL"""
-    def colisao_inquebravel(self,x,y,bloco_inquebravel,largura,comprimento):
-        avanço_fogo = pygame.Rect(x,y,largura,comprimento)
-        if avanço_fogo.collidedict(bloco_inquebravel):
-            return True
+    def colisao_inquebravel(self,rect):
+       # Verifique se o retângulo colide com obstáculos do jogo
+        for obstaculo in self.obstaculos.obstaculos: #PEGUEI A LISTA DE OBSTACULOS DA CLASSE OBSTACULO
+            if rect.colliderect(obstaculo):
+                return True
+        return False
 
 
-    def alcance(self,x,y,bloco_inquebravel):
-        #VERIFICAÇÃO da EXPANSÃO DO FOGO PARA O LADO ESQUERDO
-        condition = colisao_inquebravel(x-20,y,bloco_inquebravel,self.largura,self.comprimento)
-        if condition:
-            self.left = True
-    
-        #VERIFICAÇÃO PARA O LADO DIREITO
-        condition = colisao_inquebravel(x+20,y,bloco_inquebravel,self.largura,self.comprimento)
-        if condition:
-            self.right = True
+    def calcular_explosao(self):
+        #LISTA QUE CONTEM OS RETANGULOS DA EXPANSAO DA EXPLOSÃO
+        explosao = []
 
-        #VERIFICAÇÃO PARA CIMA
-        condition = colisao_inquebravel(x,y-20,bloco_inquebravel,self.largura,self.comprimento)
-        if condition:
-            self.up = True
+        """RETANGULOS DA EXPLOSÃO"""
+        left_rect = pygame.Rect(self.rect.left - 20, self.rect.top, self.largura, self.comprimento)
+        right_rect = pygame.Rect(self.rect.left + 20, self.rect.top, self.largura, self.comprimento)
+        up_rect = pygame.Rect(self.rect.left, self.rect.top - 20, self.largura, self.comprimento)
+        down_rect = pygame.Rect(self.rect.left, self.rect.top + 20, self.largura, self.comprimento)
 
-        #VERIFICAÇÃO PARA BAIXO
-        condition = colisao_inquebravel(x,y+20,bloco_inquebravel,self.largura,self.comprimento)
-        if condition:
-            self.down = True
+        # Verifique se os retângulos da explosão colidem com obstáculos
+        if not self.colisao_inquebravel(left_rect):
+            explosao.append(left_rect)
+        else:
+            #PARA VERIFICAR QUE NAQUELE LADO HOUVE COLISAO
+            explosao.append("erro")
 
-        self.posições.append(self.left,self.right,self.up,self.down)
+        if not self.colisao_inquebravel(right_rect):
+            explosao.append(right_rect)
+        else:
+            #PARA VERIFICAR QUE NAQUELE LADO HOUVE COLISAO
+            explosao.append("erro")
+
+        if not self.colisao_inquebravel(up_rect):
+            explosao.append(up_rect)
+        else:
+            #PARA VERIFICAR QUE NAQUELE LADO HOUVE COLISAO
+            explosao.append("erro")
+
+        if not self.colisao_inquebravel(down_rect):
+            explosao.append(down_rect)
+        else:
+            #PARA VERIFICAR QUE NAQUELE LADO HOUVE COLISAO
+            explosao.append("erro")
+
+        
+        return explosao
 	
-    def desenhar(self, tela):
+    def desenhar(self,x,y,tela):
         pygame.draw.rect(tela, self.color, self.rect)
+        #MOSTRAR A BOMBA
+        expansao = self.atualizar()
+        if self.expandiu:
+            for bomba in expansao:
+                #SE A BOMBA FOR "0" SIGNIFICA QUE ALI HOUVE COLISAO COM INQUEBRAVEL
+                if bomba =="erro":
+                    pass
+                else:
+                    pygame.draw.rect(tela, self.color, bomba)
+
