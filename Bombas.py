@@ -6,7 +6,7 @@ class Bomba:
     Classe da Bomba
 
     """
-    def __init__(self,x,y):
+    def __init__(self,x,y,tela):
         """self.x = x
         self.y = y"""
         self.largura = 20
@@ -24,6 +24,8 @@ class Bomba:
         self.right = False
         self.up = False
         self.down = False
+
+        self.desenhar(x,y,tela)
 
     """CALCULA O TEMPO PARA EXPLODIR"""
     def atualizar(self):

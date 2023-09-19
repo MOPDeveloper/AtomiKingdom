@@ -57,7 +57,7 @@ class Jogo:
                 quit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                 # Cria uma instância da bomba no lugar do jogador
-                self.nova_bomba = Bomba(self.player.rect.x+ 20, self.player.rect.y + 20)
+                self.nova_bomba = Bomba(self.player.rect.x+ 20, self.player.rect.y + 20,tela)
                 self.bomba_ativa = True
 
         teclas = pygame.key.get_pressed()
