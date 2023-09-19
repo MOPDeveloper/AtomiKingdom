@@ -58,7 +58,7 @@ class Jogo:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                 # Cria uma instância da bomba no lugar do jogador
                 self.nova_bomba = Bomba(self.player.rect.x+ 20, self.player.rect.y + 20,tela)
-                self.bomba_ativa = True
+                self.bombas_ativas.append(self.nova_bomba)
 
         teclas = pygame.key.get_pressed()
         self.player.mover(teclas, self.obstaculos)  # Passar obstáculos como argumento
@@ -98,8 +98,9 @@ class Jogo:
         self.moedavermelha.desenhar(tela)
         self.obstaculos.desenhar(tela)
 
-        if self.bomba_ativa:
-            self.nova_bomba.desenhar(self.player.rect.x,self.player.rect.y,tela)
+        for bombas in self.bombas_ativas:
+        # if self.bomba_ativa:
+            bombas.desenhar(self.player.rect.x,self.player.rect.y,tela)
             
 
         fonte = pygame.font.Font(None, 36)

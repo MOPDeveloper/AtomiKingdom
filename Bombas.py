@@ -25,6 +25,7 @@ class Bomba:
         self.up = False
         self.down = False
 
+        #CHAMANDO A FUNÇÃO DESENHAR PARA DESENHAR PRIMEIRO A BOMBA E DEPOIS EXPANDILA
         self.desenhar(x,y,tela)
 
     """CALCULA O TEMPO PARA EXPLODIR"""
@@ -51,10 +52,10 @@ class Bomba:
         explosao = []
 
         """RETANGULOS DA EXPLOSÃO"""
-        left_rect = pygame.Rect(self.rect.left - 20, self.rect.top, self.largura, self.comprimento)
-        right_rect = pygame.Rect(self.rect.left + 20, self.rect.top, self.largura, self.comprimento)
-        up_rect = pygame.Rect(self.rect.left, self.rect.top - 20, self.largura, self.comprimento)
-        down_rect = pygame.Rect(self.rect.left, self.rect.top + 20, self.largura, self.comprimento)
+        left_rect = pygame.Rect(self.rect.left - 25, self.rect.top, self.largura, self.comprimento)
+        right_rect = pygame.Rect(self.rect.left + 25, self.rect.top, self.largura, self.comprimento)
+        up_rect = pygame.Rect(self.rect.left, self.rect.top - 25, self.largura, self.comprimento)
+        down_rect = pygame.Rect(self.rect.left, self.rect.top + 25, self.largura, self.comprimento)
 
         # Verifique se os retângulos da explosão colidem com obstáculos
         if not self.colisao_inquebravel(left_rect):
