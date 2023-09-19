@@ -1,5 +1,5 @@
 import pygame
-from obstaculo import Obstaculos
+# from obstaculo import Obstaculos
 
 class Player:
     def __init__(self):
