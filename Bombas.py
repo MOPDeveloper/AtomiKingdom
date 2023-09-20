@@ -6,9 +6,10 @@ class Bomba:
     Classe da Bomba
 
     """
-    def __init__(self,x,y,tela):
+    def __init__(self,x,y,tela,bomba_id):
         """self.x = x
         self.y = y"""
+        self.bomba_id = bomba_id
         self.largura = 20
         self.comprimento = 20
         self.quadrado = pygame.Rect(x,y,self.largura,self.comprimento)
