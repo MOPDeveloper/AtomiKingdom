@@ -33,11 +33,12 @@ brick_img = pygame.image.load('assets/Bloco_Fixo.jpg')
 brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
 quebravel_img = pygame.image.load('assets/quebravel.png')
 quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
+conjunto_bomba = []
 
 
-
+"""LÓGICA DO JOGO EM FORMA DE MATRIZ"""
 LAYOUT = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1],
     [1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,6,1,],
     [1, -1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,-1,1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1],
@@ -49,7 +50,7 @@ LAYOUT = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1],
     [1, -1 , 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,-1,1],
     [1, 5, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1,-1,1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1],
         ]
 
 
@@ -104,6 +105,7 @@ todos_blocos.add(todos_quebraveis)
 # todos_players.add(player1)
 # todos_players.add(player2)
 def jogo():
+    #DESENHA TODO O MAPA 
     desenhar_mapa()
 
     while True:
