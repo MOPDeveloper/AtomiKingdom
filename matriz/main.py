@@ -1,52 +1,175 @@
 import pygame
+import sys
+from brick import Brick
+import random 
+from quebravel import Bloco_q
+from player import Player
+import pygame.mixer #garantindo uma bela canção
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba):
-        super().__init__()
+pygame.mixer.init()
+pygame.mixer.music.load('assets/esqueleto - kelvis duran.mp3')
+pygame.mixer.music.set_volume(0.25)
+
+pygame.init()
+
+#FPS DO JOGO
+clock = pygame.time.Clock()
+FPS = 30
+
+#MEDIDAS DO JOGO
+WIDTH = 750
+HEIGHT = 650
+tela = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('The Rise Of LequeLeto')
+
+#CONSTANTES DE ALTURA E LARGURA
+PLAYER_WIDTH = 45
+PLAYER_HEIGHT = 40
+BRICK_WIDTH=50
+BRICK_HEIGHT=50
+QUEBRAVEL_WIDTH=50
+QUEBRAVEL_HEIGHT=50
+BOMB_WIDTH=90
+BOMB_HEIGHT=90
+EXP_WIDTH=100
+EXP_HEIGHT=100
+
+#IMAGENS DOS BLOCOS E PERSONAGENS
+brick_img = pygame.image.load('assets/Bloco_Fixo.png')
+brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
+quebravel_img = pygame.image.load('assets/quebravel.png')
+quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
+player1_img = pygame.image.load('assets/kiriku.png')
+player1_img = pygame.transform.scale(player1_img, (BRICK_WIDTH, BRICK_HEIGHT))
+player2_img = pygame.image.load('assets/esqueleto brabo.png')
+player2_img = pygame.transform.scale(player2_img, (BRICK_WIDTH, BRICK_HEIGHT))
+conjunto_bomba = []
 
 
-        #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
-        self.image = img
-        self.todas_sprites = todos_sprites
-        self.todas_bombas = todas_bombas
-        self.todos_players = todos_players
-        self.todos_quebraveis = todos_quebraveis
-        self.rect = self.image.get_rect()
-        self.largura =largura
-        self.altura = altura
+"""LÓGICA DO JOGO EM FORMA DE MATRIZ"""
+LAYOUT = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
 
-        #POSIÇÕES 
-        self.x = x
-        self.y = y
-        self.rect.x = x*self.largura
-        self.rect.y = y*self.altura
 
-        #CONJUNTO ONDE FICA A IMAGEM DA ANIMAÇÃO DA BOMBA E DA EXPLOSAO
-        self.conjunto_bomba = conjunto_bomba
 
-        #SEGUNDOS PARA PODER SOLTAR OUTRA BOMBA
-        self.ultima_bomba = pygame.time.get_ticks()
-        self.tempo_limite = 3000 #3 SEGUNDOS PARA SOLTAR OUTRA BOMBA
+# Criando um grupo de blocos 
+todos_quebraveis = pygame.sprite.Group()
+todos_fixos = pygame.sprite.Group()
+todos_blocos = pygame.sprite.Group()
 
-    def update(self):
-        # ATUALIZA POSIÇÃO
-            self.rect.x = self.x*self.largura
-            self.rect.y = self.y*self.altura
+# Criando um grupo de sprites
+todos_sprites = pygame.sprite.Group()
+todas_bombas = pygame.sprite.Group()
+todos_players = pygame.sprite.Group()
 
-    def soltar_bomba(self):
-        tempo_atual = pygame.time.get_ticks()
 
-        # SE O TEMPO ATUAL MENOS O TEMPO QUE FOI LANÇADO A ULTIMA BOMBA FOR MAIOR QUE O LIMITE ELE LANÇA OUTRA BOMBA
-        if tempo_atual - self.ultima_bomba >= self.tempo_limite:
+player1 = None  
+player2 = None  
 
-            #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
-            self.ultima_bomba = tempo_atual
-            # nova_bomba = Bomba(self.x,self.y,self.conjunto_bomba,)
+def desenhar_mapa():
+    global player1, player2
 
-            # self.todas_bombas.add(nova_bomba)
-            # self.todas_sprites.add(self.todas_bombas)
+    for l in range (len(LAYOUT)):
+            for c in range (len(LAYOUT[l])):
+                item = LAYOUT[l][c]
+                
+                if item == 1:
+                    pedra = Brick(brick_img,c,l,BRICK_WIDTH,BRICK_HEIGHT)
+                    todos_fixos.add(pedra)
+                
+                if item == 0:
+                    r= random.randint(2,4)
+                    if r ==3 or r==4:
+                        madeira = Bloco_q(quebravel_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                        todos_quebraveis.add(madeira)
+                        LAYOUT[l][c] = 1
+                    else:
+                        LAYOUT[l][c] = 0
 
-    def colidir_coletavel(self):
-         '''FAZER AINDA COLETAVEL'''
-         pass
-    
+                if item == 5 :
+
+                    LAYOUT[l][c] = 0
+            
+                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
+                    todos_sprites.add(player1)
+                    todos_players.add(player1)
+               
+
+
+                if item == 6:
+                    LAYOUT[l][c] = 0
+                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
+                    todos_sprites.add(player2)
+
+# adicionando aos grupos de sprites
+todos_sprites.add(todos_players)
+todos_sprites.add(todos_fixos)
+todos_sprites.add(todos_quebraveis)
+todos_blocos.add(todos_fixos)
+todos_blocos.add(todos_quebraveis)
+desenhar_mapa()
+def jogo():
+    pygame.mixer.music.play(-1)
+    jogo = True
+    while jogo:
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                pygame.mixer.music.stop()
+                sys.exit()
+
+        # Tratamento de eventos de teclado
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    if LAYOUT[player1.y - 1][player1.x] == 0 or LAYOUT[player1.y - 1][player1.x] == 9:
+                        player1.y -= 1  # Mova o jogador para cima
+                elif event.key == pygame.K_DOWN:
+                    if LAYOUT[player1.y + 1][player1.x] == 0 or LAYOUT[player1.y + 1][player1.x] == 9:
+                        player1.y += 1  # Mova o jogador para baixo
+                elif event.key == pygame.K_LEFT:
+                    if LAYOUT[player1.y][player1.x - 1] == 0 or LAYOUT[player1.y][player1.x - 1] == 9:
+                        player1.x -= 1  # Mova o jogador para a esquerda
+                elif event.key == pygame.K_RIGHT: 
+                    if LAYOUT[player1.y][player1.x + 1] in[0,9]:
+                        player1.x += 1
+            
+                if event.key == pygame.K_w:
+                    if LAYOUT[player2.y - 1][player2.x] == 0 or LAYOUT[player2.y - 1][player2.x] == 9:
+                        player2.y -= 1  # Mova o jogador para cima
+                elif event.key == pygame.K_s:
+                    if LAYOUT[player2.y + 1][player2.x] == 0 or LAYOUT[player2.y + 1][player2.x] == 9:
+                        player2.y += 1  # Mova o jogador para baixo
+                elif event.key == pygame.K_a:
+                    if LAYOUT[player2.y][player2.x - 1] == 0 or LAYOUT[player2.y][player2.x - 1] == 9:
+                        player2.x -= 1  # Mova o jogador para a esquerda
+                elif event.key == pygame.K_d: 
+                    if LAYOUT[player2.y][player2.x + 1] in[0,9]:
+                        player2.x += 1
+
+        # Atualize a posição do jogador
+        player1.update()
+        player2.update()
+
+        tela.fill((144, 238, 144))  # PREENCHER A TELA DE VERDE
+
+        # Desenha os blocos
+        todos_fixos.draw(tela)
+        todos_quebraveis.draw(tela)
+        todos_sprites.draw(tela)
+        pygame.display.update()  # Atualiza a tela
+
+jogo()  # Chama a função para iniciar o loop do jogo
