@@ -15,7 +15,7 @@ FPS = 30
 WIDTH = 750
 HEIGHT = 650
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('AtomicKingdom')
+pygame.display.set_caption('AtomiKingdom')
 
 #CONSTANTES DE ALTURA E LARGURA
 PLAYER_WIDTH = 45
@@ -30,22 +30,22 @@ EXP_WIDTH=100
 EXP_HEIGHT=100
 
 #IMAGENS DOS BLOCOS E PERSONAGENS
-brick_img = pygame.image.load('assets/Bloco_Fixo.jpg')
+brick_img = pygame.image.load('assets/Bloco_Fixo.png')
 brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
 quebravel_img = pygame.image.load('assets/quebravel.png')
 quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
 player1_img = pygame.image.load('assets/kiriku.png')
 player1_img = pygame.transform.scale(player1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-player2_img = pygame.image.load('assets/esqueleto_brabo.png')
+player2_img = pygame.image.load('assets/esqueleto brabo.png')
 player2_img = pygame.transform.scale(player2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
 conjunto_bomba = []
 
 
 """LÓGICA DO JOGO EM FORMA DE MATRIZ"""
 LAYOUT = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1],
-    [1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 6, 1],
-    [1, -1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,-1,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1],
+    [1, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
+    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -53,9 +53,9 @@ LAYOUT = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, -1 , 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,-1,1],
-    [1, 5, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1,-1,1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
+    [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ]
 
 
@@ -93,15 +93,16 @@ def desenhar_mapa():
                 if item == 5 :
 
                     LAYOUT[l][c] = 0
-                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
-                    todos_players.add(player1)
+                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,PLAYER_WIDTH,PLAYER_HEIGHT,conjunto_bomba)
                     todos_sprites.add(player1)
-                
+                    todos_players.add(player1)
+
+
                 if item == 6:
                     LAYOUT[l][c] = 0
-                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
-                    todos_players.add(player2)
+                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,PLAYER_WIDTH,PLAYER_HEIGHT,conjunto_bomba)
                     todos_sprites.add(player2)
+                    todos_players.add(player2)
 
 # adicionando aos grupos de sprites
 todos_sprites.add(todos_players)
@@ -123,12 +124,11 @@ def jogo():
                 sys.exit()
 
 
-        tela.fill((101, 214, 102))  # PREENCHER A TELA DE VERDE
+        tela.fill((144, 238, 144))  # PREENCHER A TELA DE VERDE
 
         # Desenha os blocos
         todos_fixos.draw(tela)
         todos_quebraveis.draw(tela)
-
         pygame.display.update()  # Atualiza a tela
 
 jogo()  # Chama a função para iniciar o loop do jogo
