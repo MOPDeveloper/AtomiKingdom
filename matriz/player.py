@@ -1,8 +1,9 @@
 import pygame
 
-class Player:
-    def __init__(self,img,todos_sprites,todas_bombas,todos_players,todos_quebraveis,x,y,largura,altura,conjunto_bomba):
-        pygame.sprite.Sprite.__init__(self)
+class Player(pygame.sprite.Sprite):
+    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba):
+        super().__init__()
+
 
         #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
         self.imagem = img
@@ -21,11 +22,11 @@ class Player:
         self.rect.y = y*self.altura
 
         #CONJUNTO ONDE FICA A IMAGEM DA ANIMAÇÃO DA BOMBA E DA EXPLOSAO
-        self.conjunto_bomba = conjunto_bomba
+        #self.conjunto_bomba = conjunto_bomba
 
         #SEGUNDOS PARA PODER SOLTAR OUTRA BOMBA
-        self.ultima_bomba = pygame.time.get_ticks()
-        self.tempo_limite = 3000 #3 SEGUNDOS PARA SOLTAR OUTRA BOMBA
+        #self.ultima_bomba = pygame.time.get_ticks()
+        #self.tempo_limite = 3000 #3 SEGUNDOS PARA SOLTAR OUTRA BOMBA
 
     def update(self):
         # ATUALIZA POSIÇÃO
