@@ -4,7 +4,7 @@ class Player:
     def __init__(self,img,todos_sprites,todas_bombas,x,y,largura,altura,conjunto_bomba):
         pygame.sprite.Sprite.__init__(self)
 
-        #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
+        #SPRITES E IMAGENS DO JOGADOR E DA BOMB
         self.imagem = img
         self.todas_sprites = todos_sprites
         self.todas_bombas = todas_bombas
