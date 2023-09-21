@@ -1,20 +1,24 @@
 import pygame
 
 class Player:
-    def __init__(self,img,todos_sprites,todas_bombas,x,y,largura,altura,conjunto_bomba):
+    def __init__(self,img,todos_sprites,todas_bombas,todos_players,todos_quebraveis,x,y,largura,altura,conjunto_bomba):
         pygame.sprite.Sprite.__init__(self)
 
-        #SPRITES E IMAGENS DO JOGADOR E DA BOMB
+        #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
         self.imagem = img
         self.todas_sprites = todos_sprites
         self.todas_bombas = todas_bombas
+        self.todos_players = todos_players
+        self.todos_quebraveis = todos_quebraveis
         self.rect = self.imagem.get_rect()
-        
+        self.largura =largura
+        self.altura = altura
+
         #POSIÇÕES 
         self.x = x
         self.y = y
-        self.rect.x = x*largura
-        self.rect.y = y*altura
+        self.rect.x = x*self.largura
+        self.rect.y = y*self.altura
 
         #CONJUNTO ONDE FICA A IMAGEM DA ANIMAÇÃO DA BOMBA E DA EXPLOSAO
         self.conjunto_bomba = conjunto_bomba
@@ -25,8 +29,8 @@ class Player:
 
     def update(self):
         # ATUALIZA POSIÇÃO
-            self.rect.x = self.x*BRICK_WIDTH
-            self.rect.y = self.y*BRICK_HEIGHT
+            self.rect.x = self.x*self.largura
+            self.rect.y = self.y*self.altura
 
     def soltar_bomba(self):
         tempo_atual = pygame.time.get_ticks()
@@ -36,10 +40,10 @@ class Player:
 
             #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
             self.ultima_bomba = tempo_atual
-            nova_bomba = Bomba()
+            # nova_bomba = Bomba(self.x,self.y,self.conjunto_bomba,)
 
-            self.todas_bombas.add(nova_bomba)
-            self.todas_sprites.add(self.todas_bombas)
+            # self.todas_bombas.add(nova_bomba)
+            # self.todas_sprites.add(self.todas_bombas)
 
     def colidir_coletavel(self):
          '''FAZER AINDA COLETAVEL'''

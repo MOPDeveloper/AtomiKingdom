@@ -3,6 +3,7 @@ import sys
 from brick import Brick
 import random 
 from quebravel import Bloco_q
+from player import Player
 
 pygame.init()
 
@@ -33,24 +34,28 @@ brick_img = pygame.image.load('assets/Bloco_Fixo.jpg')
 brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
 quebravel_img = pygame.image.load('assets/quebravel.png')
 quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
+player1_img = pygame.image.load('assets/kiriku.png')
+player1_img = pygame.transform.scale(player1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
+player2_img = pygame.image.load('assets/esqueleto_brabo.png')
+player2_img = pygame.transform.scale(player2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
 conjunto_bomba = []
 
 
 """LÓGICA DO JOGO EM FORMA DE MATRIZ"""
 LAYOUT = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1],
-    [1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,6,1,],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1],
+    [1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 6, 1],
     [1, -1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,-1,1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,0,1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,0,1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,0,1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, -1 , 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,-1,1],
     [1, 5, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1,-1,1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ]
 
 
@@ -88,22 +93,23 @@ def desenhar_mapa():
                 if item == 5 :
 
                     LAYOUT[l][c] = 0
-                    # player1 = Player1(boneco_img, all_sprites, all_bombs,c,l,imagem)
-                    
+                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
+                    todos_players.add(player1)
+                    todos_sprites.add(player1)
                 
                 if item == 6:
                     LAYOUT[l][c] = 0
-                    # player2 = Player2(boneco1_img,all_sprites, all_bombs,c,l,imagem)
+                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
+                    todos_players.add(player2)
+                    todos_sprites.add(player2)
 
 # adicionando aos grupos de sprites
-# todos_sprites.add(player1)
-# todos_sprites.add(player2)
+todos_sprites.add(todos_players)
 todos_sprites.add(todos_fixos)
 todos_sprites.add(todos_quebraveis)
 todos_blocos.add(todos_fixos)
 todos_blocos.add(todos_quebraveis)
-# todos_players.add(player1)
-# todos_players.add(player2)
+
 def jogo():
     #DESENHA TODO O MAPA 
     desenhar_mapa()
