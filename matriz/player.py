@@ -6,12 +6,12 @@ class Player(pygame.sprite.Sprite):
 
 
         #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
-        self.imagem = img
+        self.image = img
         self.todas_sprites = todos_sprites
         self.todas_bombas = todas_bombas
         self.todos_players = todos_players
         self.todos_quebraveis = todos_quebraveis
-        self.rect = self.imagem.get_rect()
+        self.rect = self.image.get_rect()
         self.largura =largura
         self.altura = altura
 
