@@ -1,134 +1,52 @@
 import pygame
-import sys
-from brick import Brick
-import random 
-from quebravel import Bloco_q
-from player import Player
 
-pygame.init()
-
-#FPS DO JOGO
-clock = pygame.time.Clock()
-FPS = 30
-
-#MEDIDAS DO JOGO
-WIDTH = 750
-HEIGHT = 650
-tela = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('AtomiKingdom')
-
-#CONSTANTES DE ALTURA E LARGURA
-PLAYER_WIDTH = 45
-PLAYER_HEIGHT = 40
-BRICK_WIDTH=50
-BRICK_HEIGHT=50
-QUEBRAVEL_WIDTH=50
-QUEBRAVEL_HEIGHT=50
-BOMB_WIDTH=90
-BOMB_HEIGHT=90
-EXP_WIDTH=100
-EXP_HEIGHT=100
-
-#IMAGENS DOS BLOCOS E PERSONAGENS
-brick_img = pygame.image.load('assets/Bloco_Fixo.png')
-brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
-quebravel_img = pygame.image.load('assets/quebravel.png')
-quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
-player1_img = pygame.image.load('assets/kiriku.png')
-player1_img = pygame.transform.scale(player1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-player2_img = pygame.image.load('assets/esqueleto brabo.png')
-player2_img = pygame.transform.scale(player2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-conjunto_bomba = []
+class Player(pygame.sprite.Sprite):
+    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba):
+        super().__init__()
 
 
-"""LÓGICA DO JOGO EM FORMA DE MATRIZ"""
-LAYOUT = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1],
-    [1, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
-    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
-    [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        ]
+        #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
+        self.image = img
+        self.todas_sprites = todos_sprites
+        self.todas_bombas = todas_bombas
+        self.todos_players = todos_players
+        self.todos_quebraveis = todos_quebraveis
+        self.rect = self.image.get_rect()
+        self.largura =largura
+        self.altura = altura
 
+        #POSIÇÕES 
+        self.x = x
+        self.y = y
+        self.rect.x = x*self.largura
+        self.rect.y = y*self.altura
 
+        #CONJUNTO ONDE FICA A IMAGEM DA ANIMAÇÃO DA BOMBA E DA EXPLOSAO
+        self.conjunto_bomba = conjunto_bomba
 
-# Criando um grupo de blocos 
-todos_quebraveis = pygame.sprite.Group()
-todos_fixos = pygame.sprite.Group()
-todos_blocos = pygame.sprite.Group()
+        #SEGUNDOS PARA PODER SOLTAR OUTRA BOMBA
+        self.ultima_bomba = pygame.time.get_ticks()
+        self.tempo_limite = 3000 #3 SEGUNDOS PARA SOLTAR OUTRA BOMBA
 
-# Criando um grupo de sprites
-todos_sprites = pygame.sprite.Group()
-todas_bombas = pygame.sprite.Group()
-todos_players = pygame.sprite.Group()
+    def update(self):
+        # ATUALIZA POSIÇÃO
+            self.rect.x = self.x*self.largura
+            self.rect.y = self.y*self.altura
 
+    def soltar_bomba(self):
+        tempo_atual = pygame.time.get_ticks()
 
+        # SE O TEMPO ATUAL MENOS O TEMPO QUE FOI LANÇADO A ULTIMA BOMBA FOR MAIOR QUE O LIMITE ELE LANÇA OUTRA BOMBA
+        if tempo_atual - self.ultima_bomba >= self.tempo_limite:
 
-def desenhar_mapa():
-    for l in range (len(LAYOUT)):
-            for c in range (len(LAYOUT[l])):
-                item = LAYOUT[l][c]
-                
-                if item == 1:
-                    pedra = Brick(brick_img,c,l,BRICK_WIDTH,BRICK_HEIGHT)
-                    todos_fixos.add(pedra)
-                
-                if item == 0:
-                    r= random.randint(2,4)
-                    if r ==3 or r==4:
-                        madeira = Bloco_q(quebravel_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
-                        todos_quebraveis.add(madeira)
-                        LAYOUT[l][c] = 1
-                    else:
-                        LAYOUT[l][c] = 0
+            #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
+            self.ultima_bomba = tempo_atual
+            # nova_bomba = Bomba(self.x,self.y,self.conjunto_bomba,)
 
-                if item == 5 :
+            # self.todas_bombas.add(nova_bomba)
+            # self.todas_sprites.add(self.todas_bombas)
 
-                    LAYOUT[l][c] = 0
-                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,PLAYER_WIDTH,PLAYER_HEIGHT,conjunto_bomba)
-                    todos_sprites.add(player1)
-                    todos_players.add(player1)
-
-
-                if item == 6:
-                    LAYOUT[l][c] = 0
-                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,PLAYER_WIDTH,PLAYER_HEIGHT,conjunto_bomba)
-                    todos_sprites.add(player2)
-                    todos_players.add(player2)
-
-# adicionando aos grupos de sprites
-todos_sprites.add(todos_players)
-todos_sprites.add(todos_fixos)
-todos_sprites.add(todos_quebraveis)
-todos_blocos.add(todos_fixos)
-todos_blocos.add(todos_quebraveis)
-
-def jogo():
-    #DESENHA TODO O MAPA 
-    desenhar_mapa()
-
-    while True:
-        clock.tick(FPS)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-
-        tela.fill((144, 238, 144))  # PREENCHER A TELA DE VERDE
-
-        # Desenha os blocos
-        todos_fixos.draw(tela)
-        todos_quebraveis.draw(tela)
-        pygame.display.update()  # Atualiza a tela
-
-jogo()  # Chama a função para iniciar o loop do jogo
+    def colidir_coletavel(self):
+         '''FAZER AINDA COLETAVEL'''
+         pass
+    
