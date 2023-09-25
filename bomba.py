@@ -60,8 +60,10 @@ class Bomba:
 
                 for player in players:
                      if (player.x,player.y) in locais_possiveis:
+                            self.layout[quebravel.x][quebravel.y] = 0
                             if self.nome == "player1": #IDENTIFICAÇÃO QUAL É O PLAYER
                                 if player == self.nome:
+                                    """AINDA NÃO FOI CRIADO A FUNÇÃO DA VITORIA"""
                                     # win(self.nome)
                                     player.kill()
                                 else:

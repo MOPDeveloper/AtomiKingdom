@@ -3,6 +3,7 @@ from bomba import Bomba
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba,layout):
+        pygame.sprite.Sprite.__init__(self)
         super().__init__()
 
         #COLOCANDO UM NOME PELA IMAGEM

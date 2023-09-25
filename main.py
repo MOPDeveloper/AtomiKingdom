@@ -128,6 +128,7 @@ def desenhar_mapa():
                     LAYOUT[l][c] = 0
                     player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,LAYOUT)
                     todos_sprites.add(player2)
+                    todos_players.add(player2)
 
 # adicionando aos grupos de sprites
 todos_sprites.add(todos_players)
@@ -136,6 +137,7 @@ todos_sprites.add(todos_quebraveis)
 todos_blocos.add(todos_fixos)
 todos_blocos.add(todos_quebraveis)
 desenhar_mapa()
+
 def jogo():
     pygame.mixer.music.play(-1)
     jogo = True
@@ -162,6 +164,9 @@ def jogo():
                 elif event.key == pygame.K_RIGHT: 
                     if LAYOUT[player1.y][player1.x + 1] in[0,9]:
                         player1.x += 1
+                elif event.key == pygame.K_RSHIFT:
+                    player1.soltar_bomba
+                    print(1)
             
                 if event.key == pygame.K_w:
                     if LAYOUT[player2.y - 1][player2.x] == 0 or LAYOUT[player2.y - 1][player2.x] == 9:
@@ -175,6 +180,9 @@ def jogo():
                 elif event.key == pygame.K_d: 
                     if LAYOUT[player2.y][player2.x + 1] in[0,9]:
                         player2.x += 1
+                elif event.key == pygame.K_f:
+                    player2.soltar_bomba()
+                    print(1)
 
         # Atualize a posição do jogador
         player1.update()
@@ -185,6 +193,7 @@ def jogo():
         # Desenha os blocos
         todos_fixos.draw(tela)
         todos_quebraveis.draw(tela)
+        todas_bombas.draw(tela)
         todos_sprites.draw(tela)
         pygame.display.update()  # Atualiza a tela
 
