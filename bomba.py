@@ -18,9 +18,11 @@ class Bomba:
         self.image = self.conjunto_bomba[0]
         self.rect = self.image.get_rect()
         self.types= conjunto_bomba
-        self.tempo = 100
+        self.tempo = 100 #TEMPO PARA MUDAR AS IMAGENS DA ANIMAÇÃO, FOI PURA ESPECULAÇÃO E IREMOS TESTAR
 
     def update(self):
+        # AINDA ESTA ADEPTO A MUDANÇAS,POIS NÃO SEI SE O TEMPO DE 1 A SER ELIMINADO A CADA FRAME É SUFICIENTE
+        # NEM O TEMPO PARA CADA FOTO MUDAR
         self.tempo-=1
 
         if self.tempo < 70 and self.tempo>= 50:
