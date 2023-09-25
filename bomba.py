@@ -14,8 +14,30 @@ class Bomba:
         self.x = x
         self.y = y
 
-        self.image = conjunto_bomba[0]
+        self.conjunto_bomba = conjunto_bomba
+        self.image = self.conjunto_bomba[0]
         self.rect = self.image.get_rect()
         self.types= conjunto_bomba
+        self.tempo = 100
+
+    def update(self):
+        self.tempo-=1
+
+        if self.tempo < 70 and self.tempo>= 50:
+            self.image = self.conjunto_bomba[1]
+
+        if self.tempo < 50 and self.tempo>= 25:
+            self.image = self.conjunto_bomba[2]
+
+        if self.tempo < 25 and self.tempo>= 0:
+            self.image = self.conjunto_bomba[3]
+            self.explodir()
+
+    def explodir():
+        """COMEÇAR A DESENVOLVER A LOGICA DO CONTATO COM QUEBRAVEIS E PLAYER"""
+        pass
+
+
+
 
         

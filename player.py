@@ -22,11 +22,11 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y*self.altura
 
         #CONJUNTO ONDE FICA A IMAGEM DA ANIMAÇÃO DA BOMBA E DA EXPLOSAO
-        #self.conjunto_bomba = conjunto_bomba
+        self.conjunto_bomba = conjunto_bomba
 
         #SEGUNDOS PARA PODER SOLTAR OUTRA BOMBA
-        #self.ultima_bomba = pygame.time.get_ticks()
-        #self.tempo_limite = 3000 #3 SEGUNDOS PARA SOLTAR OUTRA BOMBA
+        self.ultima_bomba = pygame.time.get_ticks()
+        self.tempo_limite = 3000 #3 SEGUNDOS PARA SOLTAR OUTRA BOMBA
 
     def update(self):
         # ATUALIZA POSIÇÃO
