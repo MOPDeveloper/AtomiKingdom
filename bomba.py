@@ -1,5 +1,4 @@
 import pygame
-from main import desenhar_mapa
 
 class Bomba:
     def __init__(self,conjunto_bomba,x,y,todos_sprites,todas_bombas,todos_players,todos_quebraveis,layout,nome_player):
