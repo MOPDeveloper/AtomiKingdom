@@ -1,9 +1,14 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba):
+    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba,layout):
         super().__init__()
 
+        #COLOCANDO UM NOME PELA IMAGEM
+        if img == 'assets/kiriku.png':
+             self.nome = "player1"
+        else:
+             self.nome = "player2"
 
         #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
         self.image = img
@@ -14,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.largura =largura
         self.altura = altura
+        self.layout = layout
+    
 
         #POSIÇÕES 
         self.x = x
@@ -41,7 +48,7 @@ class Player(pygame.sprite.Sprite):
 
             #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
             self.ultima_bomba = tempo_atual
-            # nova_bomba = Bomba(self.x,self.y,self.conjunto_bomba,)
+            # nova_bomba = Bomba(self.conjunto_bomba,self.x,self.y,)
 
             # self.todas_bombas.add(nova_bomba)
             # self.todas_sprites.add(self.todas_bombas)

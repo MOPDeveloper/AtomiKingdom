@@ -118,7 +118,7 @@ def desenhar_mapa():
 
                     LAYOUT[l][c] = 0
             
-                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
+                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,LAYOUT)
                     todos_sprites.add(player1)
                     todos_players.add(player1)
                
@@ -126,7 +126,7 @@ def desenhar_mapa():
 
                 if item == 6:
                     LAYOUT[l][c] = 0
-                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba)
+                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,LAYOUT)
                     todos_sprites.add(player2)
 
 # adicionando aos grupos de sprites
