@@ -35,18 +35,34 @@ EXP_WIDTH=100
 EXP_HEIGHT=100
 
 #IMAGENS DOS BLOCOS E PERSONAGENS
-brick_img = pygame.image.load('assets/Bloco_Fixo.png')
-brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
-quebravel_img = pygame.image.load('assets/quebravel.png')
-quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
+# brick_img = pygame.image.load('assets/Bloco_Fixo.png')
+# brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
+
+# quebravel_img = pygame.image.load('assets/quebravel.png')
+# quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
+
 player1_img = pygame.image.load('assets/kiriku.png')
 player1_img = pygame.transform.scale(player1_img, (BRICK_WIDTH, BRICK_HEIGHT))
 player2_img = pygame.image.load('assets/esqueleto brabo.png')
 player2_img = pygame.transform.scale(player2_img, (BRICK_WIDTH, BRICK_HEIGHT))
-conjunto_bomba = []
+
+bomb1_img = pygame.image.load('assets/000.png')
+bomb1_img = pygame.transform.scale(bomb1_img, (BOMB_WIDTH,BOMB_HEIGHT))
+bomb2_img = pygame.image.load('assets/001.png')
+bomb2_img = pygame.transform.scale(bomb2_img, (BOMB_WIDTH,BOMB_HEIGHT))
+bomb3_img = pygame.image.load('assets/002.png')
+bomb3_img = pygame.transform.scale(bomb3_img, (BOMB_WIDTH,BOMB_HEIGHT))
+bomb4_img = pygame.image.load('assets/003.png')
+bomb4_img = pygame.transform.scale(bomb4_img, (BOMB_WIDTH,BOMB_HEIGHT))
+conjunto_bomba = [bomb1_img,bomb2_img,bomb3_img,bomb4_img]
 
 
-"""LÓGICA DO JOGO EM FORMA DE MATRIZ"""
+"""LÓGICA DO JOGO EM FORMA DE MATRIZ
+1-BLOCO FIXO
+0 - ESPAÇO VAZIO OU BLOCO QUEBRAVEL
+9 - LUGARES QUE NÃO PODEM SER BLOO QUEBRAVEIS
+5 - PLAYER1
+6 - PLAYER2 """
 LAYOUT = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
@@ -86,13 +102,13 @@ def desenhar_mapa():
                 item = LAYOUT[l][c]
                 
                 if item == 1:
-                    pedra = Brick(brick_img,c,l,BRICK_WIDTH,BRICK_HEIGHT)
+                    pedra = Brick(c,l,BRICK_WIDTH,BRICK_HEIGHT)
                     todos_fixos.add(pedra)
                 
                 if item == 0:
                     r= random.randint(2,4)
                     if r ==3 or r==4:
-                        madeira = Bloco_q(quebravel_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                        madeira = Bloco_q(c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
                         todos_quebraveis.add(madeira)
                         LAYOUT[l][c] = 1
                     else:
