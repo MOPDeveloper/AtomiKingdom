@@ -165,7 +165,7 @@ def jogo():
                     if LAYOUT[player1.y][player1.x + 1] in[0,9]:
                         player1.x += 1
                 elif event.key == pygame.K_RSHIFT:
-                    player1.soltar_bomba
+                    player1.soltar_bomba()
                     print(1)
             
                 if event.key == pygame.K_w:
@@ -187,6 +187,8 @@ def jogo():
         # Atualize a posição do jogador
         player1.update()
         player2.update()
+        todos_sprites.update()
+        todas_bombas.update()
 
         tela.fill((144, 238, 144))  # PREENCHER A TELA DE VERDE
 

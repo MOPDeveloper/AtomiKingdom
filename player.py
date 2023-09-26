@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
 
             #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
             self.ultima_bomba = tempo_atual
-            nova_bomba = Bomba(self.conjunto_bomba,self.x,self.y,self.todas_sprites,self.todas_bombas,self.todos_players,self.todos_quebraveis,self.layout,self.nome)
+            nova_bomba = Bomba(self.conjunto_bomba,self.rect.centerx,self.rect.centery,self.todas_sprites,self.todas_bombas,self.todos_players,self.todos_quebraveis,self.layout,self.nome)
 
             self.todas_bombas.add(nova_bomba)
             self.todas_sprites.add(self.todas_bombas)

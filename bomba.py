@@ -1,8 +1,9 @@
 import pygame
 
-class Bomba:
+class Bomba(pygame.sprite.Sprite):
     def __init__(self,conjunto_bomba,x,y,todos_sprites,todas_bombas,todos_players,todos_quebraveis,layout,nome_player):
         pygame.sprite.Sprite.__init__(self)
+        super().__init__()
 
         #SPRITES
         self.todos_sprites = todos_sprites
@@ -21,8 +22,10 @@ class Bomba:
         self.rect = self.image.get_rect()
         self.types= conjunto_bomba
         self.layout = layout
+        self.rect.centerx = x
+        self.rect.centery = y
 
-        self.tempo = 100 #TEMPO PARA MUDAR AS IMAGENS DA ANIMAÇÃO, FOI PURA ESPECULAÇÃO E IREMOS TESTAR
+        self.tempo = 120 #TEMPO PARA MUDAR AS IMAGENS DA ANIMAÇÃO, FOI PURA ESPECULAÇÃO E IREMOS TESTAR
 
     def update(self):
         # AINDA ESTA ADEPTO A MUDANÇAS,POIS NÃO SEI SE O TEMPO DE 1 A SER ELIMINADO A CADA FRAME É SUFICIENTE
