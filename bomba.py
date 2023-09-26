@@ -1,4 +1,6 @@
 import pygame
+from quebravel import Bloco_q
+# from player import Player
 
 class Bomba(pygame.sprite.Sprite):
     def __init__(self,conjunto_bomba,x,y,todos_sprites,todas_bombas,todos_players,todos_quebraveis,layout,nome_player):
@@ -40,38 +42,39 @@ class Bomba(pygame.sprite.Sprite):
 
         if self.tempo < 25 and self.tempo>= 0:
             self.image = self.conjunto_bomba[3]
-            self.explodir(self)
+            self.explodir()
 
     def explodir(self):
         """COMEÇAR A DESENVOLVER A LOGICA DO CONTATO COM QUEBRAVEIS E PLAYER"""
         colidir_quebravel = pygame.sprite.groupcollide(self.todas_bombas,self.todos_quebraveis,False,False)
+        print(colidir_quebravel)
         #COLODIR QUEBRAVEL É UM DICIONARIO COM A BOMBA QUE BATEU E OS VALORES SÃO UMA LISA DOS QUEBRAVEIS
-        for bomba, quebraveis in colidir_quebravel:
+        for quebraveis in colidir_quebravel:
                 locais_possiveis = [(self.x + 1, self.y), (self.x - 1, self.y), (self.x, self.y+ 1), (self.x, self.y - 1)]
 
-                for quebravel in quebraveis:
-                     if (quebravel.x,quebravel.y) in locais_possiveis:
-                          self.layout[quebravel.x][quebravel.y] = 0
-                          quebravel.kill()
+                if isinstance(quebraveis,Bloco_q):
+                     if (quebraveis.x,quebraveis.y) in locais_possiveis:
+                          self.layout[quebraveis.x][quebraveis.y] = 0
+                          quebraveis.kill()
 
 
-        colidir_player = pygame.sprite.groupcollide(self.todas_bombas,self.todos_players,False,False)
-        #COLODIR QUEBRAVEL É UM DICIONARIO COM A BOMBA QUE BATEU E OS VALORES SÃO UMA LISA DOS QUEBRAVEIS
-        for bomba, players in colidir_player:
-                #LOCAIS POSSIVEIS É A EXPANSÃO DA BOMBA
-                locais_possiveis = [(self.x + 1, self.y), (self.x - 1, self.y), (self.x, self.y+ 1), (self.x, self.y - 1)]
+        # colidir_player = pygame.sprite.groupcollide(self.todas_bombas,self.todos_players,False,False)
+        # #COLODIR QUEBRAVEL É UM DICIONARIO COM A BOMBA QUE BATEU E OS VALORES SÃO UMA LISA DOS QUEBRAVEIS
+        # for players in colidir_player:
+        #         #LOCAIS POSSIVEIS É A EXPANSÃO DA BOMBA
+        #         locais_possiveis = [(self.x + 1, self.y), (self.x - 1, self.y), (self.x, self.y+ 1), (self.x, self.y - 1)]
 
-                for player in players:
-                     if (player.x,player.y) in locais_possiveis:
-                            self.layout[quebravel.x][quebravel.y] = 0
-                            if self.nome == "player1": #IDENTIFICAÇÃO QUAL É O PLAYER
-                                if player == self.nome:
-                                    """AINDA NÃO FOI CRIADO A FUNÇÃO DA VITORIA"""
-                                    # win(self.nome)
-                                    player.kill()
-                                else:
-                                    # win(self.nome)
-                                    player.kill()
+        #         if isinstance(players,Player):
+        #              if (players.x,players.y) in locais_possiveis:
+        #                     self.layout[players.x][players.y] = 0
+        #                     if self.nome == "player1": #IDENTIFICAÇÃO QUAL É O PLAYER
+        #                         if players == self.nome:
+        #                             """AINDA NÃO FOI CRIADO A FUNÇÃO DA VITORIA"""
+        #                             # win(self.nome)
+        #                             players.kill()
+        #                         else:
+        #                             # win(self.nome)
+        #                             players.kill()
 
         self.kill()
         pass
