@@ -45,6 +45,8 @@ EXP_HEIGHT=100
 # quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
 
 player1_img = pygame.image.load('assets/kiriku.png')
+kiriku = 'assets/kiriku.png'
+esqueleto = 'assets/esqueleto brabo.png'
 player1_img = pygame.transform.scale(player1_img, (BRICK_WIDTH, BRICK_HEIGHT))
 player2_img = pygame.image.load('assets/esqueleto brabo.png')
 player2_img = pygame.transform.scale(player2_img, (BRICK_WIDTH, BRICK_HEIGHT))
@@ -70,10 +72,14 @@ coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
 6 - PLAYER2 
 7 - MOEDA
 9 - LUGARES QUE NÃO PODEM SER BLOO QUEBRAVEIS"""
-LAYOUT = [
+
+class Gerenciador_Layout:
+    def __init__(self):
+
+        self.LAYOUT = [
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 9, 6, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 9, 5, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 9, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 0, 1, 7, 1],
@@ -83,8 +89,11 @@ LAYOUT = [
     [1, 7, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 7, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 5, 9, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 1],
+    [1, 6, 9, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
+    
+
+
 
 
 
@@ -104,12 +113,15 @@ player2 = None
 coins_player1=0
 coins_player2=0 
 
+gerenciador = Gerenciador_Layout()
+
 def desenhar_mapa():
     global player1, player2, coins_player1, coins_player2
+    
 
-    for l in range (len(LAYOUT)):
-            for c in range (len(LAYOUT[l])):
-                item = LAYOUT[l][c]
+    for l in range (len(gerenciador.LAYOUT)):
+            for c in range (len(gerenciador.LAYOUT[l])):
+                item = gerenciador.LAYOUT[l][c]
                 
                 if item == 1:
                     pedra = Brick(c,l,BRICK_WIDTH,BRICK_HEIGHT)
@@ -120,31 +132,31 @@ def desenhar_mapa():
                     if r ==3 or r==4:
                         madeira = Bloco_q(c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
                         todos_quebraveis.add(madeira)
-                        LAYOUT[l][c] = 1
+                        gerenciador.LAYOUT[l][c] = 1
                     else:
-                        LAYOUT[l][c] = 0
+                        gerenciador.LAYOUT[l][c] = 0
 
                 if item == 4 :
-                    LAYOUT[l][c] = 0
+                    gerenciador.LAYOUT[l][c] = 0
                 if item == 5 :
 
-                    LAYOUT[l][c] = 0
+                    gerenciador.LAYOUT[l][c] = 0
             
-                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,LAYOUT)
+                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,gerenciador,kiriku)
                     todos_sprites.add(player1)
                     todos_players.add(player1)
                
 
 
                 if item == 6:
-                    LAYOUT[l][c] = 0
-                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,LAYOUT)
+                    gerenciador.LAYOUT[l][c] = 0
+                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,gerenciador,esqueleto)
                     todos_sprites.add(player2)
                     todos_players.add(player2)
 
                 #Definindo Moeda
                 if item==7:
-                    LAYOUT[l][c] = 0
+                    gerenciador.LAYOUT[l][c] = 0
                     coin = Coin(coin_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
                     todos_sprites.add(coin)
 
@@ -188,36 +200,38 @@ def jogo():
         # Tratamento de eventos de teclado
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    if LAYOUT[player1.y - 1][player1.x] == 0 or LAYOUT[player1.y - 1][player1.x] == 9:
+                    if gerenciador.LAYOUT[player1.y - 1][player1.x] == 0 or gerenciador.LAYOUT[player1.y - 1][player1.x] == 9:
                         player1.y -= 1  # Mova o jogador para cima
                 elif event.key == pygame.K_DOWN:
-                    if LAYOUT[player1.y + 1][player1.x] == 0 or LAYOUT[player1.y + 1][player1.x] == 9:
+                    if gerenciador.LAYOUT[player1.y + 1][player1.x] == 0 or gerenciador.LAYOUT[player1.y + 1][player1.x] == 9:
                         player1.y += 1  # Mova o jogador para baixo
                 elif event.key == pygame.K_LEFT:
-                    if LAYOUT[player1.y][player1.x - 1] == 0 or LAYOUT[player1.y][player1.x - 1] == 9:
+                    if gerenciador.LAYOUT[player1.y][player1.x - 1] == 0 or gerenciador.LAYOUT[player1.y][player1.x - 1] == 9:
                         player1.x -= 1  # Mova o jogador para a esquerda
                 elif event.key == pygame.K_RIGHT: 
-                    if LAYOUT[player1.y][player1.x + 1] in[0,9]:
+                    if gerenciador.LAYOUT[player1.y][player1.x + 1] in[0,9]:
                         player1.x += 1
                 elif event.key == pygame.K_RSHIFT:
                     player1.soltar_bomba()
                     print(1)
             
                 if event.key == pygame.K_w:
-                    if LAYOUT[player2.y - 1][player2.x] == 0 or LAYOUT[player2.y - 1][player2.x] == 9:
+                    if gerenciador.LAYOUT[player2.y - 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y - 1][player2.x] == 9:
                         player2.y -= 1  # Mova o jogador para cima
                 elif event.key == pygame.K_s:
-                    if LAYOUT[player2.y + 1][player2.x] == 0 or LAYOUT[player2.y + 1][player2.x] == 9:
+                    if gerenciador.LAYOUT[player2.y + 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y + 1][player2.x] == 9:
                         player2.y += 1  # Mova o jogador para baixo
                 elif event.key == pygame.K_a:
-                    if LAYOUT[player2.y][player2.x - 1] == 0 or LAYOUT[player2.y][player2.x - 1] == 9:
+                    if gerenciador.LAYOUT[player2.y][player2.x - 1] == 0 or gerenciador.LAYOUT[player2.y][player2.x - 1] == 9:
                         player2.x -= 1  # Mova o jogador para a esquerda
                 elif event.key == pygame.K_d: 
-                    if LAYOUT[player2.y][player2.x + 1] in[0,9]:
+                    if gerenciador.LAYOUT[player2.y][player2.x + 1] in[0,9]:
                         player2.x += 1
                 elif event.key == pygame.K_f:
                     player2.soltar_bomba()
                     print(1)
+                elif event.key == pygame.K_l:
+                    print(gerenciador.LAYOUT)
 	        # Verifique se o jogador 1 colidiu com uma moeda
         colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
         for moeda in colisoes_player1:
