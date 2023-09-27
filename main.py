@@ -63,23 +63,25 @@ coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
 
 
 """LÓGICA DO JOGO EM FORMA DE MATRIZ
-1-BLOCO FIXO
 0 - ESPAÇO VAZIO OU BLOCO QUEBRAVEL
-9 - LUGARES QUE NÃO PODEM SER BLOO QUEBRAVEIS
+1 - BLOCO FIXO
+4 - ESPAÇO PARA O TIMER
 5 - PLAYER1
-6 - PLAYER2 """
+6 - PLAYER2 
+7 - MOEDA
+9 - LUGARES QUE NÃO PODEM SER BLOO QUEBRAVEIS"""
 LAYOUT = [
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 9, 6, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 9, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 0, 1, 7, 1],
     [1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 7, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 7, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 5, 9, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
@@ -159,6 +161,16 @@ def desenhar_temporizador(tempo_decorrido):
     texto = fonte.render(f"Tempo: {tempo_decorrido} s", True, (255, 255, 255))
     tela.blit(texto, (300, 20))
 
+def desenhar_moedas_player1(coins_player1):
+    fonte = pygame.font.Font(None, 36)
+    texto = fonte.render(f"Moedas Player 1: {coins_player1} ", True, (255, 255, 255))
+    tela.blit(texto, (20, 20))
+
+def desenhar_moedas_player2(coins_player2):
+    fonte = pygame.font.Font(None, 36)
+    texto = fonte.render(f"Moedas Player 2: {coins_player2} ", True, (255, 255, 255))
+    tela.blit(texto, (500, 20))
+
 def jogo():
     global coins_player1,coins_player2
     pygame.mixer.music.play(-1)
@@ -212,7 +224,6 @@ def jogo():
             if isinstance(moeda, Coin):
                 coins_player1 += 1
                 moeda.kill()  # Remove a moeda
-                print(f"O Kelvis tem {coins_player1} moedas")
          # Verifique se o jogador 2 colidiu com uma moeda
         colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
         for moeda in colisoes_player2:
@@ -238,6 +249,8 @@ def jogo():
 
         # Desenhe o temporizador
         desenhar_temporizador(tempo_decorrido)
+        desenhar_moedas_player1(coins_player1)
+        desenhar_moedas_player2(coins_player2)
         pygame.display.update()  # Atualiza a tela
 
 jogo()  # Chama a função para iniciar o loop do jogo
