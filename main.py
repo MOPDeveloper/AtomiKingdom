@@ -5,6 +5,8 @@ import random
 from quebravel import Bloco_q
 from player import Player
 import pygame.mixer #garantindo uma bela canção
+from TempoDecorrido import Temporizador
+from coin import Coin
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/esqueleto - kelvis duran.mp3')
@@ -15,10 +17,11 @@ pygame.init()
 #FPS DO JOGO
 clock = pygame.time.Clock()
 FPS = 30
+temporizador = Temporizador(120)
 
 #MEDIDAS DO JOGO
 WIDTH = 750
-HEIGHT = 650
+HEIGHT = 700
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('The Rise Of LequeLeto')
 
@@ -55,6 +58,8 @@ bomb3_img = pygame.transform.scale(bomb3_img, (BOMB_WIDTH,BOMB_HEIGHT))
 bomb4_img = pygame.image.load('assets/003.png')
 bomb4_img = pygame.transform.scale(bomb4_img, (BOMB_WIDTH,BOMB_HEIGHT))
 conjunto_bomba = [bomb1_img,bomb2_img,bomb3_img,bomb4_img]
+coin_img = pygame.image.load('assets/coin.png')
+coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
 
 
 """LÓGICA DO JOGO EM FORMA DE MATRIZ
@@ -64,18 +69,19 @@ conjunto_bomba = [bomb1_img,bomb2_img,bomb3_img,bomb4_img]
 5 - PLAYER1
 6 - PLAYER2 """
 LAYOUT = [
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 5, 9, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
 
 
@@ -92,10 +98,12 @@ todos_players = pygame.sprite.Group()
 
 
 player1 = None  
-player2 = None  
+player2 = None 
+coins_player1=0
+coins_player2=0 
 
 def desenhar_mapa():
-    global player1, player2
+    global player1, player2, coins_player1, coins_player2
 
     for l in range (len(LAYOUT)):
             for c in range (len(LAYOUT[l])):
@@ -114,6 +122,8 @@ def desenhar_mapa():
                     else:
                         LAYOUT[l][c] = 0
 
+                if item == 4 :
+                    LAYOUT[l][c] = 0
                 if item == 5 :
 
                     LAYOUT[l][c] = 0
@@ -130,6 +140,12 @@ def desenhar_mapa():
                     todos_sprites.add(player2)
                     todos_players.add(player2)
 
+                #Definindo Moeda
+                if item==7:
+                    LAYOUT[l][c] = 0
+                    coin = Coin(coin_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                    todos_sprites.add(coin)
+
 # adicionando aos grupos de sprites
 todos_sprites.add(todos_players)
 todos_sprites.add(todos_fixos)
@@ -138,9 +154,16 @@ todos_blocos.add(todos_fixos)
 todos_blocos.add(todos_quebraveis)
 desenhar_mapa()
 
+def desenhar_temporizador(tempo_decorrido):
+    fonte = pygame.font.Font(None, 36)
+    texto = fonte.render(f"Tempo: {tempo_decorrido} s", True, (255, 255, 255))
+    tela.blit(texto, (300, 20))
+
 def jogo():
+    global coins_player1,coins_player2
     pygame.mixer.music.play(-1)
     jogo = True
+    temporizador.iniciar() #INICIALIZA O TEMPORIZADOR QUANDO RODA O JOGO
     while jogo:
         clock.tick(FPS)
 
@@ -183,7 +206,20 @@ def jogo():
                 elif event.key == pygame.K_f:
                     player2.soltar_bomba()
                     print(1)
-
+	        # Verifique se o jogador 1 colidiu com uma moeda
+        colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
+        for moeda in colisoes_player1:
+            if isinstance(moeda, Coin):
+                coins_player1 += 1
+                moeda.kill()  # Remove a moeda
+                print(f"O Kelvis tem {coins_player1} moedas")
+         # Verifique se o jogador 2 colidiu com uma moeda
+        colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
+        for moeda in colisoes_player2:
+            if isinstance(moeda, Coin):
+                coins_player2 += 1
+                moeda.kill()  # Remove a moeda
+                
         # Atualize a posição do jogador
         player1.update()
         player2.update()
@@ -197,6 +233,11 @@ def jogo():
         todos_quebraveis.draw(tela)
         todas_bombas.draw(tela)
         todos_sprites.draw(tela)
+        # Obtenha o tempo decorrido do temporizador
+        tempo_decorrido = temporizador.atualizar()
+
+        # Desenhe o temporizador
+        desenhar_temporizador(tempo_decorrido)
         pygame.display.update()  # Atualiza a tela
 
 jogo()  # Chama a função para iniciar o loop do jogo
