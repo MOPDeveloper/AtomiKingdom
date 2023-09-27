@@ -1,4 +1,5 @@
 import time
+import sys
 
 #TEMPORIZADOR DECRESCENTE
 class Temporizador:
@@ -11,15 +12,7 @@ class Temporizador:
 
     def atualizar(self):
         tempo_decorrido = int(self.tempo_total - (time.time() - self.tempo_inicial))
-        if tempo_decorrido < 0:
-            tempo_decorrido = 0
+        if tempo_decorrido == 0:
+            sys.exit()
         return tempo_decorrido
 
-# TINHA TENTADO FAZER UM CONTADOR DECRESCENTE DE UMA FORMA MAIS SIMPLES, E CONSEGUI, MAS NÃO CONSEGUI DESENHAR NA TELA.
-# import time
-#
-# for x in range(120, 0, -1):
-#     segundos = x % 60
-#     minutos = int(x/60) % 60
-#     print (f"{minutos:02}:{segundos:02}")
-#     time.sleep(1)
