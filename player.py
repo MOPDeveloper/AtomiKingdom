@@ -2,14 +2,14 @@ import pygame
 from bomba import Bomba
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba,layout):
+    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba,gerenciador_de_layout,assets):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
 
         #COLOCANDO UM NOME PELA IMAGEM
-        if img == 'assets/kiriku.png':
+        if assets == 'assets/kiriku.png':
              self.nome = "player1"
-        else:
+        elif assets == 'assets/esqueleto brabo.png':
              self.nome = "player2"
 
         #SPRITES E IMAGENS DO JOGADOR E DA BOMBA
@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.largura =largura
         self.altura = altura
-        self.layout = layout
+        self.gerenciador = gerenciador_de_layout
     
 
         #POSIÇÕES 
@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
 
             #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
             self.ultima_bomba = tempo_atual
-            nova_bomba = Bomba(self.conjunto_bomba,self.rect.centerx,self.rect.centery,self.todas_sprites,self.todas_bombas,self.todos_players,self.todos_quebraveis,self.layout,self.nome)
+            nova_bomba = Bomba(self.conjunto_bomba,self.rect.centerx,self.rect.centery,self.todas_sprites,self.todas_bombas,self.todos_players,self.todos_quebraveis,self.gerenciador,self.nome,self.x,self.y)
 
             self.todas_bombas.add(nova_bomba)
             self.todas_sprites.add(self.todas_bombas)
