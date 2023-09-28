@@ -213,8 +213,8 @@ def jogo():
                         player1.x += 1
                 elif event.key == pygame.K_RSHIFT:
                     player1.soltar_bomba()
-                    print(1)
-            
+    
+            #TECLADO DO SEGUNDO JOGADOR
                 if event.key == pygame.K_w:
                     if gerenciador.LAYOUT[player2.y - 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y - 1][player2.x] == 9:
                         player2.y -= 1  # Mova o jogador para cima
@@ -229,9 +229,7 @@ def jogo():
                         player2.x += 1
                 elif event.key == pygame.K_f:
                     player2.soltar_bomba()
-                    print(1)
-                elif event.key == pygame.K_l:
-                    print(gerenciador.LAYOUT)
+
 	        # Verifique se o jogador 1 colidiu com uma moeda
         colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
         for moeda in colisoes_player1:

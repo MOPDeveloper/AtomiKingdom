@@ -82,7 +82,7 @@ class Bomba(pygame.sprite.Sprite):
         #COLODIR QUEBRAVEL É UM DICIONARIO COM A BOMBA QUE BATEU E OS VALORES SÃO UMA LISA DOS QUEBRAVEIS
         for bomba,players in colidir_player.items():
                 #LOCAIS POSSIVEIS É A EXPANSÃO DA BOMBA
-                locais_possiveis = [(self.i + 1, self.j), (self.i - 1, self.j), (self.i, self.j+ 1), (self.i, self.j - 1)]
+                locais_possiveis = [(self.i + 1, self.j), (self.i - 1, self.j), (self.i, self.j+ 1), (self.i, self.j - 1), (self.i, self.j)]
 
                 for player in players:
                      if (player.x,player.y) in locais_possiveis:
