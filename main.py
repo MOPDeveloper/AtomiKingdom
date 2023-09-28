@@ -6,7 +6,7 @@ from quebravel import Bloco_q
 from player import Player
 import pygame.mixer #garantindo uma bela canção
 from TempoDecorrido import Temporizador
-from coin import Coin
+from coletaveis import Coin, Extra_Time, Freeze
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/esqueleto - kelvis duran.mp3')
@@ -43,7 +43,6 @@ esqueleto = 'assets/esqueleto brabo.png'
 player1_img = pygame.transform.scale(player1_img, (BRICK_WIDTH, BRICK_HEIGHT))
 player2_img = pygame.image.load('assets/esqueleto brabo.png')
 player2_img = pygame.transform.scale(player2_img, (BRICK_WIDTH, BRICK_HEIGHT))
-
 bomb1_img = pygame.image.load('assets/000.png')
 bomb1_img = pygame.transform.scale(bomb1_img, (BOMB_WIDTH,BOMB_HEIGHT))
 bomb2_img = pygame.image.load('assets/001.png')
@@ -55,7 +54,8 @@ bomb4_img = pygame.transform.scale(bomb4_img, (BOMB_WIDTH,BOMB_HEIGHT))
 conjunto_bomba = [bomb1_img,bomb2_img,bomb3_img,bomb4_img]
 coin_img = pygame.image.load('assets/coin.png')
 coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
-
+freeze_img=pygame.image.load('assets/freeze.png')
+freeze_img=pygame.transform.scale(freeze_img, (BRICK_WIDTH, BRICK_HEIGHT))
 
 """LÓGICA DO JOGO EM FORMA DE MATRIZ
 0 - ESPAÇO VAZIO OU BLOCO QUEBRAVEL
@@ -72,7 +72,7 @@ class Gerenciador_Layout:
         self.LAYOUT = [
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 9, 5, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 9, 5, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 9, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1, 0, 1, 7, 1],
@@ -82,7 +82,7 @@ class Gerenciador_Layout:
     [1, 7, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 7, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 6, 9, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 1],
+    [1, 6, 9, 8, 0, 0, 8, 0, 0, 7, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
     
 
@@ -105,6 +105,10 @@ player1 = None
 player2 = None 
 coins_player1=0
 coins_player2=0 
+jogador1_congelado = False
+tempo_congelamento1 = 0 
+jogador2_congelado = False
+tempo_congelamento2 = 0 
 
 gerenciador = Gerenciador_Layout()
 
@@ -152,6 +156,12 @@ def desenhar_mapa():
                     gerenciador.LAYOUT[l][c] = 0
                     coin = Coin(coin_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
                     todos_sprites.add(coin)
+                
+                #Definindo Freeze
+                if item==8:
+                    gerenciador.LAYOUT[l][c] = 0
+                    freeze = Freeze(freeze_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                    todos_sprites.add(freeze)
 
 # adicionando aos grupos de sprites
 todos_sprites.add(todos_players)
@@ -184,7 +194,8 @@ def desenhar_moedas_player2(coins_player2):
     # 10, 17, 38
 
 def jogo():
-    global coins_player1,coins_player2
+    global coins_player1,coins_player2,jogador1_congelado,tempo_congelamento1,jogador2_congelado,tempo_congelamento2
+    
     pygame.mixer.music.play(-1)
     jogo = True
     temporizador.iniciar() #INICIALIZA O TEMPORIZADOR QUANDO RODA O JOGO
@@ -199,38 +210,40 @@ def jogo():
 
         # Tratamento de eventos de teclado
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    if gerenciador.LAYOUT[player1.y - 1][player1.x] == 0 or gerenciador.LAYOUT[player1.y - 1][player1.x] == 9:
-                        player1.y -= 1  # Mova o jogador para cima
-                elif event.key == pygame.K_DOWN:
-                    if gerenciador.LAYOUT[player1.y + 1][player1.x] == 0 or gerenciador.LAYOUT[player1.y + 1][player1.x] == 9:
-                        player1.y += 1  # Mova o jogador para baixo
-                elif event.key == pygame.K_LEFT:
-                    if gerenciador.LAYOUT[player1.y][player1.x - 1] == 0 or gerenciador.LAYOUT[player1.y][player1.x - 1] == 9:
-                        player1.x -= 1  # Mova o jogador para a esquerda
-                elif event.key == pygame.K_RIGHT: 
-                    if gerenciador.LAYOUT[player1.y][player1.x + 1] in[0,9]:
-                        player1.x += 1
-                elif event.key == pygame.K_RSHIFT:
-                    player1.soltar_bomba()
+                if not jogador1_congelado:
+                    if event.key == pygame.K_UP:
+                        if gerenciador.LAYOUT[player1.y - 1][player1.x] == 0 or gerenciador.LAYOUT[player1.y - 1][player1.x] == 9:
+                            player1.y -= 1  # Mova o jogador para cima
+                    elif event.key == pygame.K_DOWN:
+                        if gerenciador.LAYOUT[player1.y + 1][player1.x] == 0 or gerenciador.LAYOUT[player1.y + 1][player1.x] == 9:
+                            player1.y += 1  # Mova o jogador para baixo
+                    elif event.key == pygame.K_LEFT:
+                        if gerenciador.LAYOUT[player1.y][player1.x - 1] == 0 or gerenciador.LAYOUT[player1.y][player1.x - 1] == 9:
+                            player1.x -= 1  # Mova o jogador para a esquerda
+                    elif event.key == pygame.K_RIGHT: 
+                        if gerenciador.LAYOUT[player1.y][player1.x + 1] in[0,9]:
+                            player1.x += 1
+                    elif event.key == pygame.K_RSHIFT:
+                        player1.soltar_bomba()
     
             #TECLADO DO SEGUNDO JOGADOR
-                if event.key == pygame.K_w:
-                    if gerenciador.LAYOUT[player2.y - 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y - 1][player2.x] == 9:
-                        player2.y -= 1  # Mova o jogador para cima
-                elif event.key == pygame.K_s:
-                    if gerenciador.LAYOUT[player2.y + 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y + 1][player2.x] == 9:
-                        player2.y += 1  # Mova o jogador para baixo
-                elif event.key == pygame.K_a:
-                    if gerenciador.LAYOUT[player2.y][player2.x - 1] == 0 or gerenciador.LAYOUT[player2.y][player2.x - 1] == 9:
-                        player2.x -= 1  # Mova o jogador para a esquerda
-                elif event.key == pygame.K_d: 
-                    if gerenciador.LAYOUT[player2.y][player2.x + 1] in[0,9]:
-                        player2.x += 1
-                elif event.key == pygame.K_f:
-                    player2.soltar_bomba()
+                if not jogador2_congelado:
+                    if event.key == pygame.K_w:
+                        if gerenciador.LAYOUT[player2.y - 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y - 1][player2.x] == 9:
+                            player2.y -= 1 # Mova o jogador para cima
+                    elif event.key == pygame.K_s:
+                        if gerenciador.LAYOUT[player2.y + 1][player2.x] == 0 or gerenciador.LAYOUT[player2.y + 1][player2.x] == 9:
+                            player2.y += 1  # Mova o jogador para baixo
+                    elif event.key == pygame.K_a:
+                        if gerenciador.LAYOUT[player2.y][player2.x - 1] == 0 or gerenciador.LAYOUT[player2.y][player2.x - 1] == 9:
+                            player2.x -= 1  # Mova o jogador para a esquerda
+                    elif event.key == pygame.K_d: 
+                        if gerenciador.LAYOUT[player2.y][player2.x + 1] in[0,9]:
+                            player2.x += 1
+                    elif event.key == pygame.K_f:
+                        player2.soltar_bomba()
 
-	        # Verifique se o jogador 1 colidiu com uma moeda
+	    # Verifique se o jogador 1 colidiu com uma moeda
         colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
         for moeda in colisoes_player1:
             if isinstance(moeda, Coin):
@@ -242,6 +255,36 @@ def jogo():
             if isinstance(moeda, Coin):
                 coins_player2 += 1
                 moeda.kill()  # Remove a moeda
+
+        # Verifique se o jogador 1 colidiu com freeze
+        colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
+        for ice in colisoes_player1:
+            if isinstance(ice, Freeze):
+                ice.kill() 
+                jogador2_congelado = True
+                tempo_congelamento2 = 100
+         # Verifique se o jogador 2 colidiu com freeze
+        colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
+        for ice in colisoes_player2:
+            if isinstance(ice, Freeze):
+                ice.kill()  
+                jogador1_congelado = True
+                tempo_congelamento1 = 100
+
+        # Reduza o tempo de congelamento
+        if jogador1_congelado:
+            tempo_congelamento1 -= 1
+
+            # Se o tempo de congelamento terminou, descongele o jogador 2
+            if tempo_congelamento1 <= 0:
+                jogador1_congelado = False    
+        # Reduza o tempo de congelamento
+        if jogador2_congelado:
+            tempo_congelamento2 -= 1
+
+            # Se o tempo de congelamento terminou, descongele o jogador 2
+            if tempo_congelamento2 <= 0:
+                jogador2_congelado = False
                 
         # Atualize a posição do jogador
         player1.update()
