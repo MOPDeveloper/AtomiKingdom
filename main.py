@@ -56,6 +56,8 @@ coin_img = pygame.image.load('assets/coin.png')
 coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
 freeze_img=pygame.image.load('assets/freeze.png')
 freeze_img=pygame.transform.scale(freeze_img, (BRICK_WIDTH, BRICK_HEIGHT))
+add_time_img=pygame.image.load('assets/add_time.png')
+add_time_img = pygame.transform.scale(add_time_img, (BRICK_WIDTH, BRICK_HEIGHT))
 
 """LÓGICA DO JOGO EM FORMA DE MATRIZ
 0 - ESPAÇO VAZIO OU BLOCO QUEBRAVEL
@@ -79,9 +81,9 @@ class Gerenciador_Layout:
     [1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 7, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 7, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 7, 1, 2, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 7, 7, 2, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 9, 1, 2, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 6, 9, 8, 0, 0, 8, 0, 0, 7, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
     
@@ -162,6 +164,12 @@ def desenhar_mapa():
                     gerenciador.LAYOUT[l][c] = 0
                     freeze = Freeze(freeze_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
                     todos_sprites.add(freeze)
+
+                #Definindo Add Time
+                if item==2:
+                    gerenciador.LAYOUT[l][c] = 0
+                    add_time = Extra_Time(add_time_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                    todos_sprites.add(add_time)
 
 # adicionando aos grupos de sprites
 todos_sprites.add(todos_players)
@@ -285,6 +293,20 @@ def jogo():
             # Se o tempo de congelamento terminou, descongele o jogador 2
             if tempo_congelamento2 <= 0:
                 jogador2_congelado = False
+
+        # Verifique se o jogador 1 colidiu com add_time
+        colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
+        for time in colisoes_player1:
+            if isinstance(time, Extra_Time):
+                time.kill() 
+                temporizador.aumentar(6)
+        # Verifique se o jogador 2 colidiu com add_time
+        colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
+        for time in colisoes_player2:
+            if isinstance(time, Extra_Time):
+                time.kill()  
+                temporizador.aumentar(6)
+        
                 
         # Atualize a posição do jogador
         player1.update()
