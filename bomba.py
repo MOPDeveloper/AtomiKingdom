@@ -33,6 +33,10 @@ class Bomba(pygame.sprite.Sprite):
 
         self.tempo = 120 #TEMPO PARA MUDAR AS IMAGENS DA ANIMAÇÃO, FOI PURA ESPECULAÇÃO E IREMOS TESTAR
 
+
+        if (self.i, self.j) == (self.x,self.y):
+             print("estou dentro")
+
     def update(self):
         # AINDA ESTA ADEPTO A MUDANÇAS,POIS NÃO SEI SE O TEMPO DE 1 A SER ELIMINADO A CADA FRAME É SUFICIENTE
         # NEM O TEMPO PARA CADA FOTO MUDAR
@@ -61,21 +65,6 @@ class Bomba(pygame.sprite.Sprite):
                 if (quebrado.x,quebrado.y) in locais_possiveis:
                     self.gerenciador.LAYOUT[quebrado.y][quebrado.x] = 0
                     quebrado.kill()
-
-        # """COMEÇAR A DESENVOLVER A LOGICA DO CONTATO COM QUEBRAVEIS E PLAYER"""
-        # colidir_quebravel = pygame.sprite.spritecollide(self.todas_bombas,self.todos_sprites,False,False)
-
-        # print(colidir_quebravel)
-        # #COLODIR QUEBRAVEL É UM DICIONARIO COM A BOMBA QUE BATEU E OS VALORES SÃO UMA LISA DOS QUEBRAVEIS
-        # for quebraveis in colidir_quebravel:
-        #     print(quebraveis)
-            
-        #     locais_possiveis = [(self.x + 1, self.y), (self.x - 1, self.y), (self.x, self.y+ 1), (self.x, self.y - 1)]
-
-        #     if isinstance(quebraveis,Bloco_q):
-        #         if (quebraveis.x,quebraveis.y) in locais_possiveis:
-        #             self.layout[quebraveis.x][quebraveis.y] = 0
-        #             quebraveis.kill()
 
 
         colidir_player = pygame.sprite.groupcollide(self.todas_bombas,self.todos_players,False,False)

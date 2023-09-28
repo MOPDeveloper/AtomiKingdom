@@ -37,13 +37,6 @@ BOMB_HEIGHT=90
 EXP_WIDTH=100
 EXP_HEIGHT=100
 
-#IMAGENS DOS BLOCOS E PERSONAGENS
-# brick_img = pygame.image.load('assets/Bloco_Fixo.png')
-# brick_img = pygame.transform.scale(brick_img, (BRICK_WIDTH, BRICK_HEIGHT))
-
-# quebravel_img = pygame.image.load('assets/quebravel.png')
-# quebravel_img =  pygame.transform.scale(quebravel_img, (QUEBRAVEL_WIDTH, QUEBRAVEL_HEIGHT))
-
 player1_img = pygame.image.load('assets/kiriku.png')
 kiriku = 'assets/kiriku.png'
 esqueleto = 'assets/esqueleto brabo.png'
@@ -169,19 +162,26 @@ todos_blocos.add(todos_quebraveis)
 desenhar_mapa()
 
 def desenhar_temporizador(tempo_decorrido):
-    fonte = pygame.font.Font(None, 36)
-    texto = fonte.render(f"Tempo: {tempo_decorrido} s", True, (255, 255, 255))
+    fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
+    texto = fonte.render(f"Tempo: {tempo_decorrido} s", True, (16,28,64))
     tela.blit(texto, (300, 20))
 
 def desenhar_moedas_player1(coins_player1):
-    fonte = pygame.font.Font(None, 36)
-    texto = fonte.render(f"Moedas Player 1: {coins_player1} ", True, (255, 255, 255))
+    fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
+    texto = fonte.render(f"Moedas Player 1: {coins_player1} ", True, (16,28,64))
     tela.blit(texto, (20, 20))
 
 def desenhar_moedas_player2(coins_player2):
-    fonte = pygame.font.Font(None, 36)
-    texto = fonte.render(f"Moedas Player 2: {coins_player2} ", True, (255, 255, 255))
+    fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
+    texto = fonte.render(f"Moedas Player 2: {coins_player2} ", True, (16,28,64))
     tela.blit(texto, (500, 20))
+
+    # PALETA DE CORES DO QUEBRAVEL
+    # 46,78,140
+    #  39, 65, 140
+    # 31, 52, 115
+    16,28,64
+    # 10, 17, 38
 
 def jogo():
     global coins_player1,coins_player2
