@@ -15,4 +15,7 @@ class Temporizador:
         if tempo_decorrido == 0:
             sys.exit()
         return tempo_decorrido
+    
+    def aumentar(self, segundos):
+        self.tempo_total+=segundos
 
