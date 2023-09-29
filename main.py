@@ -17,7 +17,7 @@ pygame.init()
 #FPS DO JOGO
 clock = pygame.time.Clock()
 FPS = 30
-temporizador = Temporizador(5)
+temporizador = Temporizador(120)
 
 #MEDIDAS DO JOGO
 WIDTH = 750
@@ -72,7 +72,7 @@ class Gerenciador_Layout:
     def __init__(self):
 
         self.LAYOUT = [
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
     [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1],
@@ -83,7 +83,7 @@ class Gerenciador_Layout:
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 2, 1, 0, 1, 8, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 7, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 8, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
     
@@ -104,7 +104,11 @@ todos_players = pygame.sprite.Group()
 
 
 player1 = None  
-player2 = None 
+player2 = None
+freeze_1 = 0
+freeze_2 = 0 
+times_1 = 0
+times_2 = 0
 coins_player1=0
 coins_player2=0 
 jogador1_congelado = False
@@ -181,19 +185,19 @@ desenhar_mapa()
 
 
 def desenhar_temporizador(tempo_decorrido):
-    fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
+    fonte = pygame.font.Font('assets/Minecraft.ttf', 30)
     texto = fonte.render(f"Tempo: {tempo_decorrido} s", True, (16,28,64))
-    tela.blit(texto, (300, 20))
+    tela.blit(texto, (550, 15))
 
 def desenhar_moedas_player1(coins_player1):
-    fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
+    fonte = pygame.font.Font('assets/Minecraft.ttf', 15)
     texto = fonte.render(f"Moedas Player 1: {coins_player1} ", True, (16,28,64))
-    tela.blit(texto, (20, 20))
+    tela.blit(texto, (1, 1))
 
 def desenhar_moedas_player2(coins_player2):
-    fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
+    fonte = pygame.font.Font('assets/Minecraft.ttf', 15)
     texto = fonte.render(f"Moedas Player 2: {coins_player2} ", True, (16,28,64))
-    tela.blit(texto, (500, 20))
+    tela.blit(texto, (1, 30))
 
     # PALETA DE CORES DO QUEBRAVEL
     # 46,78,140
@@ -203,7 +207,7 @@ def desenhar_moedas_player2(coins_player2):
     # 10, 17, 38
 
 def jogo():
-    global coins_player1,coins_player2,jogador1_congelado,tempo_congelamento1,jogador2_congelado,tempo_congelamento2
+    global freeze_1, freeze_2, times_1, times_2, coins_player1,coins_player2,jogador1_congelado,tempo_congelamento1,jogador2_congelado,tempo_congelamento2
     
     pygame.mixer.music.play(-1)
     jogo = True
@@ -275,19 +279,23 @@ def jogo():
 
         # Verifique se o jogador 1 colidiu com freeze
         colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
+        
         for ice in colisoes_player1:
             if isinstance(ice, Freeze):
                 ice.kill() 
+                freeze_1 += 1
                 jogador2_congelado = True
                 tempo_congelamento2 = 100
+
          # Verifique se o jogador 2 colidiu com freeze
         colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
         for ice in colisoes_player2:
             if isinstance(ice, Freeze):
                 ice.kill()  
+                freeze_2 += 1
                 jogador1_congelado = True
                 tempo_congelamento1 = 160
-
+        
         # Reduza o tempo de congelamento
         if jogador1_congelado:
             tempo_congelamento1 -= 1
@@ -305,18 +313,40 @@ def jogo():
 
         # Verifique se o jogador 1 colidiu com add_time
         colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
+
         for time in colisoes_player1:
             if isinstance(time, Extra_Time):
+                times_1 += 1
                 time.kill() 
                 temporizador.aumentar(6)
         # Verifique se o jogador 2 colidiu com add_time
         colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
         for time in colisoes_player2:
             if isinstance(time, Extra_Time):
+                times_2 += 1
                 time.kill()  
                 temporizador.aumentar(6)
         
-                
+        #TRATANDO COLETAVEIS PARA A APRESENTACAO DE P1
+        def desenhar_freeze_player1(freeze_1):
+            fonte = pygame.font.Font('assets/Minecraft.ttf', 15)
+            texto = fonte.render(f"Freeze Player 1: {freeze_1} ", True, (16,28,64))
+            tela.blit(texto, (160, 1))  
+        def desenhar_freeze_player2(freeze_2):
+            fonte = pygame.font.Font('assets/Minecraft.ttf', 15)
+            texto = fonte.render(f"Freeze Player 2: {freeze_2} ", True, (16,28,64))
+            tela.blit(texto, (160, 30))  
+        
+        def desenhar_times_player1(times_1):
+            fonte = pygame.font.Font('assets/Minecraft.ttf', 15)
+            texto = fonte.render(f"Extra Times Player 1: {times_1} ", True, (16,28,64))
+            tela.blit(texto, (320, 1))  
+        def desenhar_times_player2(times_2):
+            fonte = pygame.font.Font('assets/Minecraft.ttf', 15)
+            texto = fonte.render(f"Extra Times Player 2: {times_2} ", True, (16,28,64))
+            tela.blit(texto, (320, 30)) 
+
+
         # Atualize a posição do jogador
         player1.update()
         player2.update()
@@ -348,6 +378,10 @@ def jogo():
                 tela.blit(texto, (200, 325))
                 
         # Desenhe o temporizador
+        desenhar_freeze_player1(freeze_1)
+        desenhar_freeze_player2(freeze_2)
+        desenhar_times_player1(times_1)
+        desenhar_times_player2(times_2)
         desenhar_temporizador(tempo_decorrido)
         desenhar_moedas_player1(coins_player1)
         desenhar_moedas_player2(coins_player2)
