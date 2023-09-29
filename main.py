@@ -10,14 +10,14 @@ from coletaveis import Coin, Extra_Time, Freeze
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/esqueleto - kelvis duran.mp3')
-pygame.mixer.music.set_volume(0.25)
+pygame.mixer.music.set_volume(0.00)
 
 pygame.init()
 
 #FPS DO JOGO
 clock = pygame.time.Clock()
 FPS = 30
-temporizador = Temporizador(120)
+temporizador = Temporizador(5)
 
 #MEDIDAS DO JOGO
 WIDTH = 750
@@ -32,8 +32,8 @@ BRICK_WIDTH=50
 BRICK_HEIGHT=50
 QUEBRAVEL_WIDTH=50
 QUEBRAVEL_HEIGHT=50
-BOMB_WIDTH=90
-BOMB_HEIGHT=90
+BOMB_WIDTH=65
+BOMB_HEIGHT=65
 EXP_WIDTH=100
 EXP_HEIGHT=100
 
@@ -74,8 +74,8 @@ class Gerenciador_Layout:
         self.LAYOUT = [
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
-    [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 5, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
+    [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 8, 1, 0, 1, 2, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -83,8 +83,8 @@ class Gerenciador_Layout:
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 2, 1, 0, 1, 8, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 6, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
+    [1, 7, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
     
 
@@ -179,6 +179,7 @@ todos_blocos.add(todos_fixos)
 todos_blocos.add(todos_quebraveis)
 desenhar_mapa()
 
+
 def desenhar_temporizador(tempo_decorrido):
     fonte = pygame.font.Font('assets/Minecraft.ttf', 25)
     texto = fonte.render(f"Tempo: {tempo_decorrido} s", True, (16,28,64))
@@ -263,6 +264,14 @@ def jogo():
             if isinstance(moeda, Coin):
                 coins_player2 += 1
                 moeda.kill()  # Remove a moeda
+        
+        def determinar_vencedor(coins_player1, coins_player2):
+            if coins_player1 > coins_player2:
+                return "Player 1"
+            elif coins_player2 > coins_player1:
+                return "Player 2"
+            else:
+                return "Empate"
 
         # Verifique se o jogador 1 colidiu com freeze
         colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
@@ -277,7 +286,7 @@ def jogo():
             if isinstance(ice, Freeze):
                 ice.kill()  
                 jogador1_congelado = True
-                tempo_congelamento1 = 100
+                tempo_congelamento1 = 160
 
         # Reduza o tempo de congelamento
         if jogador1_congelado:
@@ -323,7 +332,21 @@ def jogo():
         todos_sprites.draw(tela)
         # Obtenha o tempo decorrido do temporizador
         tempo_decorrido = temporizador.atualizar()
-
+        if tempo_decorrido == 0:
+            vencedor = determinar_vencedor(coins_player1, coins_player2)
+            if vencedor == 'Player 1':
+                fonte = pygame.font.Font('assets/Minecraft.ttf', 100)
+                texto = fonte.render(f"PLAYER 1 WINS", True, (0,0,0))
+                tela.blit(texto, (0, 325))
+            elif vencedor == 'Player 2':
+                fonte = pygame.font.Font('assets/Minecraft.ttf', 100)
+                texto = fonte.render(f"PLAYER 2 WINS", True, (0,0,0))
+                tela.blit(texto, (0, 325))
+            else:
+                fonte = pygame.font.Font('assets/Minecraft.ttf', 100)
+                texto = fonte.render(f"EMPATE", True, (0,0,0))
+                tela.blit(texto, (200, 325))
+                
         # Desenhe o temporizador
         desenhar_temporizador(tempo_decorrido)
         desenhar_moedas_player1(coins_player1)
