@@ -104,6 +104,7 @@ Condicionais e estruturas de repetição foram usadas em diversas partes do cód
 
 ## 8) Os desafios e erros enfrentados no decorrer do projeto e as lições aprendidas. 
 
+Nosso principal desafio foi abstrair nossa imaginação em códigos, utilizando pygame e paradigma de orientação a objeto sem ter experiência. Nosso principal erro foi relacionado ao mapa. Fizemos boa parte do jogo e no fim, percebemos que teríamos que modificar tudo, para uma estrutura em matriz, nos empenhamos e conseguimos voltar ao estado anterior em apenas 2 dias, mesmo tendo que refazer praticamente todo o código. Sobre lições aprendidas, a principal foi sobre a importância de uma base teórica e de pesquisa. Nosso principal erro seria evitado, caso houvesse uma pesquisa prévia acerca da forma de criação de mapas para jogos como o nosso.
  <br>
 
 ## 9) Qual foi o maior erro cometido durante o projeto? Como vocês lidaram com ele? 
