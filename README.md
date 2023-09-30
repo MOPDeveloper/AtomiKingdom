@@ -44,7 +44,7 @@ Execute o arquivo main.py presente na raiz do repositório.
 
 ## 4) A organização do código; 
 <br>
-Para a organização do código, seguimos uma estrutura com arquivo main.py, arquivo README.md e arquivos separados por classes e funções dentro do jogo e a pasta assets. O arquivo main.py foi utilizado para ser o arquivo principal do código, com todos os elementos e funcionalidades sendo chamados dentro do mesmo.  
+Para a organização do código, seguimos uma estrutura com arquivo main.py, arquivo README.md e arquivos separados por classes e funções dentro do jogo e a pasta "assets". O arquivo main.py foi utilizado para ser o arquivo principal do código, com todos os elementos e funcionalidades sendo chamados dentro do mesmo.  
 
 <br>
 <br>
@@ -56,15 +56,11 @@ O arquivo main.py está estruturado da seguinte forma:
 
         2. Parâmetros Tela geral do pygame 
 
-        3. Variáveis para telas a serem abertas 
+        3. Variáveis para telas a serem abertas   
 
-        4. Variáveis tela menu  
-
-        5. Variáveis tela game over 
-
-        6. Vidas 
-
-        7. Powerups 
+        .
+        .
+        .
 
         8. While rodando o jogo  
 
