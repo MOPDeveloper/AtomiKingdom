@@ -56,14 +56,11 @@ O arquivo main.py está estruturado da seguinte forma:
 
         2. Parâmetros Tela geral do pygame 
 
-        3. Variáveis para telas a serem abertas   
+        3. Definição de Sprites   
 
-        .
-        .
-        .
+        4. Variáveis e Funções necessárias para os desenhos do jogo.
 
-        8. While rodando o jogo  
-
+        5. Loop principal
  
 
 Os arquivos armazenam as diferentes classes. Dentro da pasta “assets” temos todas as imagens utilizadas no jogo, as "sprites".
@@ -85,13 +82,13 @@ Os arquivos armazenam as diferentes classes. Dentro da pasta “assets” temos 
 
 ## 6) A divisão de trabalho dentro do grupo (quem fez o que); 
 
-`André`: 
+`André`: Coletáveis e função de tempo
 
-`Matheus`: 
+`Matheus`: Programação da main e debugando.
 
-`Mateus`: 
+`Mateus`: Lógica e programação da bomba e player.
 
-`Rodrigo`:
+`Rodrigo`: 
  <br>   
 
 ## 7) Conceitos que foram apresentados durante a disciplina e utilizados no projeto (indicando onde foram usados);    
