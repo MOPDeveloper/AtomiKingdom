@@ -82,13 +82,13 @@ Os arquivos armazenam as diferentes classes. Dentro da pasta “assets” temos 
 
 ## 6) A divisão de trabalho dentro do grupo (quem fez o que); 
 
-`André`: Coletáveis e função de tempo
+`André`: Coletáveis e Organização das Classes em arquivos.py;
 
-`Matheus`: Programação da main e debugando.
+`Matheus`: Estruturação da main e Debugger do código;
 
-`Mateus`: Lógica e programação da bomba e player.
+`Mateus`: Classes da Bomba e do Player;
 
-`Rodrigo`: 
+`Rodrigo`: Classe do Temporizador e organização do relatório.
  <br>   
 
 ## 7) Conceitos que foram apresentados durante a disciplina e utilizados no projeto (indicando onde foram usados);    
