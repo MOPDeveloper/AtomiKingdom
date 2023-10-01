@@ -89,9 +89,6 @@ class Gerenciador_Layout:
     
 
 
-
-
-
 # Criando um grupo de blocos 
 todos_quebraveis = pygame.sprite.Group()
 todos_fixos = pygame.sprite.Group()
@@ -257,17 +254,11 @@ def jogo():
                         player2.soltar_bomba()
 
 	    # Verifique se o jogador 1 colidiu com uma moeda
-        colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
-        for moeda in colisoes_player1:
-            if isinstance(moeda, Coin):
-                coins_player1 += 1
-                moeda.kill()  # Remove a moeda
+        if player1.colidir_coin(player1) == "TrueCoin":
+            coins_player1 += 1
          # Verifique se o jogador 2 colidiu com uma moeda
-        colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
-        for moeda in colisoes_player2:
-            if isinstance(moeda, Coin):
-                coins_player2 += 1
-                moeda.kill()  # Remove a moeda
+        if player2.colidir_coin(player2) == "TrueCoin":
+            coins_player2 += 1
         
         def determinar_vencedor(coins_player1, coins_player2):
             if coins_player1 > coins_player2:
@@ -278,23 +269,15 @@ def jogo():
                 return "Empate"
 
         # Verifique se o jogador 1 colidiu com freeze
-        colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
-        
-        for ice in colisoes_player1:
-            if isinstance(ice, Freeze):
-                ice.kill() 
-                freeze_1 += 1
-                jogador2_congelado = True
-                tempo_congelamento2 = 100
-
-         # Verifique se o jogador 2 colidiu com freeze
-        colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
-        for ice in colisoes_player2:
-            if isinstance(ice, Freeze):
-                ice.kill()  
-                freeze_2 += 1
-                jogador1_congelado = True
-                tempo_congelamento1 = 160
+        if player1.colidir_freeze(player1) == True:
+            freeze_1 += 1
+            jogador2_congelado = True
+            tempo_congelamento2 = 100
+        # Verifique se o jogador 2 colidiu com freeze 
+        if player2.colidir_freeze(player2) == True:
+            freeze_2 += 1
+            jogador1_congelado = True
+            tempo_congelamento1 = 100
         
         # Reduza o tempo de congelamento
         if jogador1_congelado:
@@ -312,20 +295,13 @@ def jogo():
                 jogador2_congelado = False
 
         # Verifique se o jogador 1 colidiu com add_time
-        colisoes_player1 = pygame.sprite.spritecollide(player1, todos_sprites, False)
-
-        for time in colisoes_player1:
-            if isinstance(time, Extra_Time):
-                times_1 += 1
-                time.kill() 
-                temporizador.aumentar(6)
+        if player1.colidir_time(player1) == True:
+            times_1 += 1
+            temporizador.aumentar(6)
         # Verifique se o jogador 2 colidiu com add_time
-        colisoes_player2 = pygame.sprite.spritecollide(player2, todos_sprites, False)
-        for time in colisoes_player2:
-            if isinstance(time, Extra_Time):
-                times_2 += 1
-                time.kill()  
-                temporizador.aumentar(6)
+        if player2.colidir_time(player2) == True:
+            times_2 += 1
+            temporizador.aumentar(6)
         
         #TRATANDO COLETAVEIS PARA A APRESENTACAO DE P1
         def desenhar_freeze_player1(freeze_1):
