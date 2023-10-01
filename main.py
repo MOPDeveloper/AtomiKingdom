@@ -10,10 +10,11 @@ from quebravel import Bloco_q
 from player import Player
 from tempoDecorrido import Temporizador
 from coletaveis import Coin, Extra_Time, Freeze
+from button import Button
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/esqueleto - kelvis duran.mp3')
-pygame.mixer.music.set_volume(1.00)
+pygame.mixer.music.set_volume(0.15)
 
 pygame.init()
 
@@ -24,6 +25,8 @@ temporizador = Temporizador(120)
 
 #Tela
 tela = pygame.display.set_mode((constantes.WIDTH, constantes.HEIGHT))
+icon = pygame.image.load('assets/icon.png')
+pygame.display.set_icon(icon)
 
 # Criando um grupo de blocos 
 todos_quebraveis = pygame.sprite.Group()
@@ -50,9 +53,28 @@ tempo_congelamento2 = 0
 
 gerenciador = GerenciadorLayout()
 
+def menu_principal():
+    while True:
+        pygame.display.set_caption('Menu Principal')
+        #BOTAO É 246,433
+        button = Button('assets/jogar_button.png',247,380)
+        button.show_button(tela)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                if button.pressed(mouse_x, mouse_y, 380, 460):
+                    jogo()
+            
+        pygame.display.update()
+        tela.blit(layout.tela_inicial, (0, 0))
+
+
 def desenhar_mapa():
     global player1, player2, coins_player1, coins_player2
-    
 
     for l in range (len(gerenciador.LAYOUT)):
             for c in range (len(gerenciador.LAYOUT[l])):
@@ -315,13 +337,13 @@ def win(player):
             #(148,190,76,75)
             (91,140,77,55)
             #(140,217,119,59)
-            tela.blit(texto, (200, 240))
+            tela.blit(texto, (190, 240))
         elif player == player2:
             tela.blit(layout.cemiterio, (0,0))
             tela.blit(letoleto_grande,(310,320))
             fonte = pygame.font.Font('assets/Minecraft.ttf', 50)
-            texto = fonte.render(f"LETOLETO VENCEU", True, (255,255,255))
-            tela.blit(texto, (150, 250))
+            texto = fonte.render(f"LEQUELETO VENCEU", True, (255,255,255))
+            tela.blit(texto, (115, 250))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -330,5 +352,6 @@ def win(player):
 
         pygame.display.update()
         
-
-jogo()  # Chama a função para iniciar o loop do jogo
+ # Chama a função para iniciar o loop do jogo
+menu_principal()
+ 
