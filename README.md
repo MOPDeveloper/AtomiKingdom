@@ -84,7 +84,7 @@ Os arquivos armazenam as diferentes classes. Dentro da pasta “assets” temos 
 
 `André`: Coletáveis e Organização das Classes em arquivos.py;
 
-`Matheus`: Estruturação da main e Debugger do código;
+`Matheus`: Main e debugando o código;
 
 `Mateus`: Classes da Bomba e do Player;
 
@@ -112,7 +112,7 @@ Não diríamos um erro em si, mas a organização e distribuição de tarefas de
 
 ## 10) Qual foi o maior desafio enfrentado durante o projeto? Como vocês lidaram com ele? 
 
-De início, estávamos seguindo com uma estruturação um pouco mais complicada para a organização do mapa do jogo, o que fez com que estivéssemos caminhando para algo mais complexo do que poderíamos ir pelo prazo estabelecido. Ao conversar com os integrantes e com o professor, estruturamos melhor o código. Dessa forma, caminhou de uma maneira mais fácil de lidar com as modularizações do código.
+No início, estávamos seguindo com uma estruturação um pouco mais complicada para a organização do mapa do jogo, o que fez com que estivéssemos caminhando para algo mais complexo do que poderíamos ir pelo prazo estabelecido. Ao conversar com os integrantes e com o professor, estruturamos melhor o código. Dessa forma, caminhou de uma maneira mais fácil de lidar com as modularizações do código.
 
 Outro ponto foi estruturar o código em POO. Assistimos vários vídeos no youtube que pudessem nos ajudar com a refatoração do código e também conversávamos entre nós para implementar o código da melhor forma possível. 
 
