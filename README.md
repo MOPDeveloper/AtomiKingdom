@@ -3,10 +3,10 @@
 ## 1) Integrantes da `Equipe 7`:
 <br>
 
-- 
-- 
-- 
-- Rodrigo César de Lima Silva
+- André Campos
+- Mateus Ataíde
+- Matheus Pessoa 
+- Rodrigo César
 
 <br>
      
