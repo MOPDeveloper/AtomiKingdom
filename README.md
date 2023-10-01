@@ -29,7 +29,7 @@ Antes de baixar o projeto você vai precisar ter instalado na sua máquina as se
 
 ```bash
 # Clone o repositório
-$ git clone https://github.com/Dev-JoseRonaldo/projeto-p1-equipe7.git
+$ git clone https://github.com/MOPDeveloper/AtomiKingdom.git
 
 # Abrir o projeto
 Abra a pasta clonada em seu editor de código favorito.
