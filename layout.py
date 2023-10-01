@@ -17,15 +17,15 @@ class GerenciadorLayout:
             [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1],
+            [1, 0, 1, 8, 1, 0, 1, 0, 1, 0, 1, 0, 1, 9, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 8, 1, 0, 1, 2, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 2, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 7, 1, 0, 1, 0, 1, 7, 1, 0, 1, 0, 1, 7, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 2, 1, 0, 1, 8, 1, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 8, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+            [1, 9, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
             [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], ]
 
@@ -33,7 +33,7 @@ class GerenciadorLayout:
 # TELAS FINAIS DO JOGO
 floresta = pygame.image.load('assets/floresta.png')
 floresta = pygame.transform.scale(floresta, (constantes.WIDTH, constantes.HEIGHT))
-cemiterio = pygame.image.load('assets/cemiterio.png')
+cemiterio = pygame.image.load('assets/cemiterio2.png')
 cemiterio = pygame.transform.scale(cemiterio, (constantes.WIDTH, constantes.HEIGHT))
 
 #SPRITES DO JOGO
