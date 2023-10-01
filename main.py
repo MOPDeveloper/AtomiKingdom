@@ -43,15 +43,6 @@ esqueleto = 'assets/esqueleto brabo.png'
 player1_img = pygame.transform.scale(player1_img, (BRICK_WIDTH, BRICK_HEIGHT))
 player2_img = pygame.image.load('assets/esqueleto brabo.png')
 player2_img = pygame.transform.scale(player2_img, (BRICK_WIDTH, BRICK_HEIGHT))
-bomb1_img = pygame.image.load('assets/000.png')
-bomb1_img = pygame.transform.scale(bomb1_img, (BOMB_WIDTH,BOMB_HEIGHT))
-bomb2_img = pygame.image.load('assets/001.png')
-bomb2_img = pygame.transform.scale(bomb2_img, (BOMB_WIDTH,BOMB_HEIGHT))
-bomb3_img = pygame.image.load('assets/002.png')
-bomb3_img = pygame.transform.scale(bomb3_img, (BOMB_WIDTH,BOMB_HEIGHT))
-bomb4_img = pygame.image.load('assets/003.png')
-bomb4_img = pygame.transform.scale(bomb4_img, (BOMB_WIDTH,BOMB_HEIGHT))
-conjunto_bomba = [bomb1_img,bomb2_img,bomb3_img,bomb4_img]
 coin_img = pygame.image.load('assets/coin.png')
 coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
 freeze_img=pygame.image.load('assets/freeze.png')
@@ -142,7 +133,7 @@ def desenhar_mapa():
 
                     gerenciador.LAYOUT[l][c] = 0
             
-                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,gerenciador,kiriku)
+                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,gerenciador,kiriku)
                     todos_sprites.add(player1)
                     todos_players.add(player1)
                
@@ -150,7 +141,7 @@ def desenhar_mapa():
 
                 if item == 6:
                     gerenciador.LAYOUT[l][c] = 0
-                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,conjunto_bomba,gerenciador,esqueleto)
+                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,gerenciador,esqueleto)
                     todos_sprites.add(player2)
                     todos_players.add(player2)
 
@@ -322,6 +313,18 @@ def jogo():
             texto = fonte.render(f"Extra Times Player 2: {times_2} ", True, (16,28,64))
             tela.blit(texto, (320, 30)) 
 
+        # def win():
+
+
+        #VERIFICAÇÃO DE QUAL PLAYER VENCEU OU NÃO
+        if len(todos_players) == 1:
+            vencedor = todos_players.sprites()[0]
+            imagem_vencedor =vencedor.image
+
+            if imagem_vencedor == player1_img:
+                print("Kiriku é o vencedor!")
+            elif imagem_vencedor == player2_img:
+                print("Esqueleto é o vencedor!")
 
         # Atualize a posição do jogador
         player1.update()
