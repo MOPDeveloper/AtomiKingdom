@@ -1,11 +1,14 @@
 import pygame
 import sys
+import constantes
+import layout
+import random
+import pygame.mixer
+from layout import GerenciadorLayout
 from brick import Brick
-import random 
 from quebravel import Bloco_q
 from player import Player
-import pygame.mixer #garantindo uma bela canção
-from TempoDecorrido import Temporizador
+from tempoDecorrido import Temporizador
 from coletaveis import Coin, Extra_Time, Freeze
 
 pygame.mixer.init()
@@ -19,72 +22,8 @@ clock = pygame.time.Clock()
 FPS = 30
 temporizador = Temporizador(120)
 
-#MEDIDAS DO JOGO
-WIDTH = 750
-HEIGHT = 700
-tela = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('The Rise Of LequeLeto')
-
-#CONSTANTES DE ALTURA E LARGURA
-PLAYER_WIDTH = 45
-PLAYER_HEIGHT = 40
-BRICK_WIDTH=50
-BRICK_HEIGHT=50
-QUEBRAVEL_WIDTH=50
-QUEBRAVEL_HEIGHT=50
-BOMB_WIDTH=65
-BOMB_HEIGHT=65
-EXP_WIDTH=100
-EXP_HEIGHT=100
-# TELAS FINAIS DO JOGO
-floresta = pygame.image.load('assets/floresta.png')
-floresta = pygame.transform.scale(floresta, (WIDTH,HEIGHT))
-cemiterio = pygame.image.load('assets/cemiterio.png')
-cemiterio = pygame.transform.scale(cemiterio, (WIDTH,HEIGHT))
-
-#SPRITES DO JOGO
-player1_img = pygame.image.load('assets/kiriku.png')
-kiriku = 'assets/kiriku.png'
-esqueleto = 'assets/esqueleto brabo.png'
-player1_img = pygame.transform.scale(player1_img, (BRICK_WIDTH, BRICK_HEIGHT))
-player2_img = pygame.image.load('assets/esqueleto brabo.png')
-player2_img = pygame.transform.scale(player2_img, (BRICK_WIDTH, BRICK_HEIGHT))
-coin_img = pygame.image.load('assets/coin.png')
-coin_img = pygame.transform.scale(coin_img, (BRICK_WIDTH, BRICK_HEIGHT))
-freeze_img=pygame.image.load('assets/freeze.png')
-freeze_img=pygame.transform.scale(freeze_img, (BRICK_WIDTH, BRICK_HEIGHT))
-add_time_img=pygame.image.load('assets/add_time.png')
-add_time_img = pygame.transform.scale(add_time_img, (BRICK_WIDTH, BRICK_HEIGHT))
-
-"""LÓGICA DO JOGO EM FORMA DE MATRIZ
-0 - ESPAÇO VAZIO OU BLOCO QUEBRAVEL
-1 - BLOCO FIXO
-4 - ESPAÇO PARA O TIMER
-5 - PLAYER1
-6 - PLAYER2 
-7 - MOEDA
-9 - LUGARES QUE NÃO PODEM SER BLOO QUEBRAVEIS"""
-
-class Gerenciador_Layout:
-    def __init__(self):
-
-        self.LAYOUT = [
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1],
-    [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 6, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 7, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 8, 1, 0, 1, 2, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 7, 1, 0, 1, 0, 1, 7, 1, 0, 1, 0, 1, 7, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 2, 1, 0, 1, 8, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 8, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
-    
-
+#Tela
+tela = pygame.display.set_mode((constantes.WIDTH, constantes.HEIGHT))
 
 # Criando um grupo de blocos 
 todos_quebraveis = pygame.sprite.Group()
@@ -95,7 +34,6 @@ todos_blocos = pygame.sprite.Group()
 todos_sprites = pygame.sprite.Group()
 todas_bombas = pygame.sprite.Group()
 todos_players = pygame.sprite.Group()
-
 
 player1 = None  
 player2 = None
@@ -110,7 +48,7 @@ tempo_congelamento1 = 0
 jogador2_congelado = False
 tempo_congelamento2 = 0 
 
-gerenciador = Gerenciador_Layout()
+gerenciador = GerenciadorLayout()
 
 def desenhar_mapa():
     global player1, player2, coins_player1, coins_player2
@@ -119,55 +57,57 @@ def desenhar_mapa():
     for l in range (len(gerenciador.LAYOUT)):
             for c in range (len(gerenciador.LAYOUT[l])):
                 item = gerenciador.LAYOUT[l][c]
-                
-                if item == 1:
-                    pedra = Brick(c,l,BRICK_WIDTH,BRICK_HEIGHT)
-                    todos_fixos.add(pedra)
-                
+
                 if item == 0:
                     r= random.randint(2,4)
                     if r ==3 or r==4:
-                        madeira = Bloco_q(c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                        madeira = Bloco_q(c, l, constantes.QUEBRAVEL_WIDTH, constantes.QUEBRAVEL_HEIGHT)
                         todos_quebraveis.add(madeira)
                         gerenciador.LAYOUT[l][c] = 1
                     else:
                         gerenciador.LAYOUT[l][c] = 0
+                
+                if item == 1:
+                    pedra = Brick(c, l, constantes.BRICK_WIDTH, constantes.BRICK_HEIGHT)
+                    todos_fixos.add(pedra)
+
+                #Definindo Add Time
+                if item == 2:
+                    gerenciador.LAYOUT[l][c] = 0
+                    add_time = Extra_Time(layout.add_time_img, c, l, constantes.QUEBRAVEL_WIDTH,
+                                          constantes.QUEBRAVEL_HEIGHT)
+                    todos_sprites.add(add_time)
 
                 if item == 4 :
                     gerenciador.LAYOUT[l][c] = 0
-                if item == 5 :
 
+                if item == 5 :
                     gerenciador.LAYOUT[l][c] = 0
-            
-                    player1 = Player(player1_img, todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,gerenciador,kiriku)
+                    player1 = Player(layout.player1_img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, c, l,
+                                     constantes.BRICK_WIDTH, constantes.BRICK_HEIGHT, gerenciador, layout.kiriku)
                     todos_sprites.add(player1)
                     todos_players.add(player1)
-               
 
 
                 if item == 6:
                     gerenciador.LAYOUT[l][c] = 0
-                    player2 = Player(player2_img,todos_sprites, todas_bombas,todos_players,todos_quebraveis,c,l,BRICK_WIDTH,BRICK_HEIGHT,gerenciador,esqueleto)
+                    player2 = Player(layout.player2_img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, c, l,
+                                     constantes.BRICK_WIDTH, constantes.BRICK_HEIGHT, gerenciador, layout.esqueleto)
                     todos_sprites.add(player2)
                     todos_players.add(player2)
 
                 #Definindo Moeda
                 if item==7:
                     gerenciador.LAYOUT[l][c] = 0
-                    coin = Coin(coin_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                    coin = Coin(layout.coin_img, c, l, constantes.QUEBRAVEL_WIDTH, constantes.QUEBRAVEL_HEIGHT)
                     todos_sprites.add(coin)
                 
                 #Definindo Freeze
                 if item==8:
                     gerenciador.LAYOUT[l][c] = 0
-                    freeze = Freeze(freeze_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
+                    freeze = Freeze(layout.freeze_img, c, l, constantes.QUEBRAVEL_WIDTH, constantes.QUEBRAVEL_HEIGHT)
                     todos_sprites.add(freeze)
 
-                #Definindo Add Time
-                if item==2:
-                    gerenciador.LAYOUT[l][c] = 0
-                    add_time = Extra_Time(add_time_img,c,l,QUEBRAVEL_WIDTH,QUEBRAVEL_HEIGHT)
-                    todos_sprites.add(add_time)
 
 # adicionando aos grupos de sprites
 todos_sprites.add(todos_players)
@@ -193,12 +133,6 @@ def desenhar_moedas_player2(coins_player2):
     texto = fonte.render(f"Moedas Player 2: {coins_player2} ", True, (16,28,64))
     tela.blit(texto, (1, 30))
 
-    # PALETA DE CORES DO QUEBRAVEL
-    # 46,78,140
-    #  39, 65, 140
-    # 31, 52, 115
-    16,28,64
-    # 10, 17, 38
 
 def jogo():
     global freeze_1, freeze_2, times_1, times_2, coins_player1,coins_player2,jogador1_congelado,tempo_congelamento1,jogador2_congelado,tempo_congelamento2
@@ -325,9 +259,9 @@ def jogo():
             vencedor = todos_players.sprites()[0]
             imagem_vencedor =vencedor.image
 
-            if imagem_vencedor == player1_img:
+            if imagem_vencedor == layout.player1_img:
                 win(player1)
-            elif imagem_vencedor == player2_img:
+            elif imagem_vencedor == layout.player2_img:
                 win(player2)
 
         # Atualize a posição do jogador
@@ -376,9 +310,9 @@ def win(player):
         tela.fill((0, 255, 100))
 
         if player == player1:
-            tela.blit(floresta, (0,0))
+            tela.blit(layout.floresta, (0,0))
         elif player == player2:
-            tela.blit(cemiterio, (0,0))
+            tela.blit(layout.cemiterio, (0,0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
