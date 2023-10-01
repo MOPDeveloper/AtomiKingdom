@@ -1,5 +1,6 @@
 import pygame
 from bomba import Bomba
+from coletaveis import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba,gerenciador_de_layout,assets):
@@ -55,6 +56,27 @@ class Player(pygame.sprite.Sprite):
             self.todas_bombas.add(nova_bomba)
             self.todas_sprites.add(self.todas_bombas)
 
-    def colidir_coletavel(self):
-         '''FAZER AINDA COLETAVEL'''
-         pass
+    def colidir_coin(self,player):
+        colisoes_player = pygame.sprite.spritecollide(player, self.todas_sprites, False)
+        for moeda in colisoes_player:
+            if isinstance(moeda, Coin):
+                moeda.kill()
+                return "TrueCoin"
+            
+    def colidir_freeze(self,player):
+        colisoes_player = pygame.sprite.spritecollide(player, self.todas_sprites, False)
+        for ice in colisoes_player:
+            if isinstance(ice, Freeze):
+                ice.kill()
+                return True
+        return False
+        
+    def colidir_time(self,player):
+        colisoes_player = pygame.sprite.spritecollide(player, self.todas_sprites, False)
+        for time in colisoes_player:
+            if isinstance(time, Extra_Time):
+                time.kill()
+                return True
+        return False
+
+         
