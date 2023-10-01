@@ -86,7 +86,7 @@ Os arquivos armazenam as diferentes classes. Dentro da pasta “assets” temos 
 
 `Matheus`: Main e debugando o código;
 
-`Mateus`: Classes da Bomba e do Player;
+`Mateus`: Classes da Bomba e do Player, telas finais e do inicio;
 
 `Rodrigo`: Classe do Temporizador e organização do relatório.
  <br>   
