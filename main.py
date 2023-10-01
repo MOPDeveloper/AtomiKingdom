@@ -57,7 +57,7 @@ def menu_principal():
     while True:
         pygame.display.set_caption('Menu Principal')
         #BOTAO É 246,433
-        button = Button('assets/jogar_button.png',247,380)
+        button = Button(247,380)
         button.show_button(tela)
 
         for event in pygame.event.get():
