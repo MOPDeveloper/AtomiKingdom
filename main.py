@@ -13,7 +13,7 @@ from coletaveis import Coin, Extra_Time, Freeze
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/esqueleto - kelvis duran.mp3')
-pygame.mixer.music.set_volume(0.00)
+pygame.mixer.music.set_volume(1.00)
 
 pygame.init()
 
