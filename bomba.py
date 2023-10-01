@@ -3,7 +3,7 @@ from quebravel import Bloco_q
 # from player import Player
 
 class Bomba(pygame.sprite.Sprite):
-    def __init__(self,conjunto_bomba,x,y,todos_sprites,todas_bombas,todos_players,todos_quebraveis,gerenciador,nome_player,i,j):
+    def __init__(self,x,y,todos_sprites,todas_bombas,todos_players,todos_quebraveis,gerenciador,nome_player,i,j):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
 
@@ -13,6 +13,17 @@ class Bomba(pygame.sprite.Sprite):
         self.todos_players = todos_players
         self.todos_quebraveis = todos_quebraveis
         self.nome = nome_player
+        self.BOMB_WIDTH = 65
+        self.BOMB_HEIGHT = 65
+        self.bomb1_img = pygame.image.load('assets/000.png')
+        self.bomb1_img = pygame.transform.scale(self.bomb1_img, (self.BOMB_WIDTH,self.BOMB_HEIGHT))
+        self.bomb2_img = pygame.image.load('assets/001.png')
+        self.bomb2_img = pygame.transform.scale(self.bomb2_img, (self.BOMB_WIDTH,self.BOMB_HEIGHT))
+        self.bomb3_img = pygame.image.load('assets/002.png')
+        self.bomb3_img = pygame.transform.scale(self.bomb3_img, (self.BOMB_WIDTH,self.BOMB_HEIGHT))
+        self.bomb4_img = pygame.image.load('assets/003.png')
+        self.bomb4_img = pygame.transform.scale(self.bomb4_img, (self.BOMB_WIDTH,self.BOMB_HEIGHT))
+        self.conjunto_bomba = [self.bomb1_img,self.bomb2_img,self.bomb3_img,self.bomb4_img]
 
         #POSIÇÕES
         self.x = x
@@ -23,19 +34,16 @@ class Bomba(pygame.sprite.Sprite):
         self.j = j
 
         #IMAGENS E LAYOUT
-        self.conjunto_bomba = conjunto_bomba
+        # self.conjunto_bomba = conjunto_bomba
         self.image = self.conjunto_bomba[0]
         self.rect = self.image.get_rect()
-        self.types= conjunto_bomba
+        self.types= self.conjunto_bomba
         self.gerenciador = gerenciador
         self.rect.centerx = x
         self.rect.centery = y
 
         self.tempo = 120 #TEMPO PARA MUDAR AS IMAGENS DA ANIMAÇÃO, FOI PURA ESPECULAÇÃO E IREMOS TESTAR
 
-
-        if (self.i, self.j) == (self.x,self.y):
-             print("estou dentro")
 
     def update(self):
         # AINDA ESTA ADEPTO A MUDANÇAS,POIS NÃO SEI SE O TEMPO DE 1 A SER ELIMINADO A CADA FRAME É SUFICIENTE
