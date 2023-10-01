@@ -24,6 +24,8 @@ class Bomba(pygame.sprite.Sprite):
         self.bomb4_img = pygame.image.load('assets/003.png')
         self.bomb4_img = pygame.transform.scale(self.bomb4_img, (self.BOMB_WIDTH,self.BOMB_HEIGHT))
         self.conjunto_bomba = [self.bomb1_img,self.bomb2_img,self.bomb3_img,self.bomb4_img]
+        self.explosao = pygame.mixer.Sound("assets/explosao.mp3")
+        self.explosao.set_volume(0.05)
 
         #POSIÇÕES
         self.x = x
@@ -58,6 +60,7 @@ class Bomba(pygame.sprite.Sprite):
 
         if self.tempo < 25 and self.tempo>= 0:
             self.image = self.conjunto_bomba[3]
+            self.explosao.play()
             self.explodir()
 
     def explodir(self):
@@ -87,12 +90,9 @@ class Bomba(pygame.sprite.Sprite):
                             
                             if self.nome == "player1": #IDENTIFICAÇÃO QUAL É O PLAYER
                                     print(self.nome)
-                                    """AINDA NÃO FOI CRIADO A FUNÇÃO DA VITORIA"""
-                                    # win(self.nome)
                                     player.kill()
                             if self.nome == "player2": #IDENTIFICAÇÃO QUAL É O PLAYER
                                     print(self.nome)
-                                    # win(self.nome)
                                     player.kill()
 
         self.kill()
