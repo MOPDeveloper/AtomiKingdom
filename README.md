@@ -152,5 +152,6 @@ Outro ponto foi estruturar o código em POO. Assistimos vários vídeos no youtu
 
 ### <p align="center">Tela de Game Over </p>
 <p align="center">
-  <img alt="Banner gameover" src="/assets/TeladoGanhador.png" width="80%">
+  <img alt="Banner gameover" src="/assets/fim kiriku.png" width="80%">
+  <img alt="Banner gameover" src="/assets/fim letoleto.png" width="80%">
 </p>
