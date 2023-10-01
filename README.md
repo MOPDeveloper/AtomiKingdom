@@ -144,7 +144,7 @@ Outro ponto foi estruturar o código em POO. Assistimos vários vídeos no youtu
 
 ### <p align="center">Tela Inicial </p>
 <p align="center">
-  <img alt="Banner menu" src="" width="80%">
+  <img alt="Banner menu" src="/assets/Teladojogo.png" width="80%">
 </p>
 
 <br>
