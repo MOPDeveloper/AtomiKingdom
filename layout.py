@@ -35,6 +35,8 @@ floresta = pygame.image.load('assets/floresta.png')
 floresta = pygame.transform.scale(floresta, (constantes.WIDTH, constantes.HEIGHT))
 cemiterio = pygame.image.load('assets/cemiterio2.png')
 cemiterio = pygame.transform.scale(cemiterio, (constantes.WIDTH, constantes.HEIGHT))
+tela_inicial = pygame.image.load('assets/menu_inicial.png')
+
 
 #SPRITES DO JOGO
 player1_img = pygame.image.load('assets/kiriku.png')
