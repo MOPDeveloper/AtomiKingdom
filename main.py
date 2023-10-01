@@ -157,6 +157,7 @@ def desenhar_moedas_player2(coins_player2):
 
 
 def jogo():
+    pygame.display.set_caption('The rise of lequeleto')
     global freeze_1, freeze_2, times_1, times_2, coins_player1,coins_player2,jogador1_congelado,tempo_congelamento1,jogador2_congelado,tempo_congelamento2
     
     pygame.mixer.music.play(-1)
