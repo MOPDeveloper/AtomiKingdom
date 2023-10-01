@@ -282,13 +282,9 @@ def jogo():
         if tempo_decorrido == 0:
             vencedor = determinar_vencedor(coins_player1, coins_player2)
             if vencedor == 'Player 1':
-                fonte = pygame.font.Font('assets/Minecraft.ttf', 100)
-                texto = fonte.render(f"PLAYER 1 WINS", True, (0,0,0))
-                tela.blit(texto, (0, 325))
+                win(player1)
             elif vencedor == 'Player 2':
-                fonte = pygame.font.Font('assets/Minecraft.ttf', 100)
-                texto = fonte.render(f"PLAYER 2 WINS", True, (0,0,0))
-                tela.blit(texto, (0, 325))
+                win(player2)
             else:
                 fonte = pygame.font.Font('assets/Minecraft.ttf', 100)
                 texto = fonte.render(f"EMPATE", True, (0,0,0))
@@ -308,11 +304,24 @@ def win(player):
     while True:
         pygame.display.set_caption('Fim de jogo')
         tela.fill((0, 255, 100))
+        kiriku_grande = pygame.transform.scale(layout.player1_img, (100, 100))
+        letoleto_grande = pygame.transform.scale(layout.player2_img, (100, 100))
 
         if player == player1:
             tela.blit(layout.floresta, (0,0))
+            tela.blit(kiriku_grande,(310,320))
+            fonte = pygame.font.Font('assets/Minecraft.ttf', 50)
+            texto = fonte.render(f"KIRIKU VENCEU", True, (91,140,77,55))
+            #(148,190,76,75)
+            (91,140,77,55)
+            #(140,217,119,59)
+            tela.blit(texto, (200, 240))
         elif player == player2:
             tela.blit(layout.cemiterio, (0,0))
+            tela.blit(letoleto_grande,(310,320))
+            fonte = pygame.font.Font('assets/Minecraft.ttf', 50)
+            texto = fonte.render(f"LETOLETO VENCEU", True, (255,255,255))
+            tela.blit(texto, (150, 250))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
