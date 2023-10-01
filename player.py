@@ -3,7 +3,7 @@ from bomba import Bomba
 from coletaveis import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura, conjunto_bomba,gerenciador_de_layout,assets):
+    def __init__(self, img, todos_sprites, todas_bombas, todos_players, todos_quebraveis, x, y, largura, altura,gerenciador_de_layout,assets):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
 
@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y*self.altura
 
         #CONJUNTO ONDE FICA A IMAGEM DA ANIMAÇÃO DA BOMBA E DA EXPLOSAO
-        self.conjunto_bomba = conjunto_bomba
+        # self.conjunto_bomba = conjunto_bomba
 
         #SEGUNDOS PARA PODER SOLTAR OUTRA BOMBA
         self.ultima_bomba = pygame.time.get_ticks()
@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
 
             #ULTIMA BOMBA VIRA O TEMPO ATUAL E CRIA UMA NOVA BOMVA
             self.ultima_bomba = tempo_atual
-            nova_bomba = Bomba(self.conjunto_bomba,self.rect.centerx,self.rect.centery,self.todas_sprites,self.todas_bombas,self.todos_players,self.todos_quebraveis,self.gerenciador,self.nome,self.x,self.y)
+            nova_bomba = Bomba(self.rect.centerx,self.rect.centery,self.todas_sprites,self.todas_bombas,self.todos_players,self.todos_quebraveis,self.gerenciador,self.nome,self.x,self.y)
 
             self.todas_bombas.add(nova_bomba)
             self.todas_sprites.add(self.todas_bombas)
