@@ -142,6 +142,14 @@ Outro ponto foi estruturar o código em POO. Assistimos vários vídeos no youtu
 ## 12) Capturas de tela do sistema funcionando para compor a galeria de projetos 
 <br>
 
+### <p align="center">Tela do menu principal </p>
+<p align="center">
+  <img alt="Banner menu" src="/assets/menu_principal.png" width="80%">
+</p>
+
+<br>
+<br>
+
 ### <p align="center">Tela Inicial </p>
 <p align="center">
   <img alt="Banner menu" src="/assets/Teladojogo.png" width="80%">
