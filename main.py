@@ -36,7 +36,13 @@ BOMB_WIDTH=65
 BOMB_HEIGHT=65
 EXP_WIDTH=100
 EXP_HEIGHT=100
+# TELAS FINAIS DO JOGO
+floresta = pygame.image.load('assets/floresta.png')
+floresta = pygame.transform.scale(floresta, (WIDTH,HEIGHT))
+cemiterio = pygame.image.load('assets/cemiterio.png')
+cemiterio = pygame.transform.scale(cemiterio, (WIDTH,HEIGHT))
 
+#SPRITES DO JOGO
 player1_img = pygame.image.load('assets/kiriku.png')
 kiriku = 'assets/kiriku.png'
 esqueleto = 'assets/esqueleto brabo.png'
@@ -313,8 +319,6 @@ def jogo():
             texto = fonte.render(f"Extra Times Player 2: {times_2} ", True, (16,28,64))
             tela.blit(texto, (320, 30)) 
 
-        # def win():
-
 
         #VERIFICAÇÃO DE QUAL PLAYER VENCEU OU NÃO
         if len(todos_players) == 1:
@@ -322,9 +326,9 @@ def jogo():
             imagem_vencedor =vencedor.image
 
             if imagem_vencedor == player1_img:
-                print("Kiriku é o vencedor!")
+                win(player1)
             elif imagem_vencedor == player2_img:
-                print("Esqueleto é o vencedor!")
+                win(player2)
 
         # Atualize a posição do jogador
         player1.update()
@@ -365,5 +369,23 @@ def jogo():
         desenhar_moedas_player1(coins_player1)
         desenhar_moedas_player2(coins_player2)
         pygame.display.update()  # Atualiza a tela
+
+def win(player):
+    while True:
+        pygame.display.set_caption('Fim de jogo')
+        tela.fill((0, 255, 100))
+
+        if player == player1:
+            tela.blit(floresta, (0,0))
+        elif player == player2:
+            tela.blit(cemiterio, (0,0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        pygame.display.update()
+        
 
 jogo()  # Chama a função para iniciar o loop do jogo
