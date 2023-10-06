@@ -12,7 +12,7 @@
      
 ## 2) Link para repositório git
   
-   https://github.com/MOPDeveloper/AtomiKingdom
+   https://github.com/MOPDeveloper/The-Rise-of-Lequeleto
 
 <br>
 
@@ -29,7 +29,7 @@ Antes de baixar o projeto você vai precisar ter instalado na sua máquina as se
 
 ```bash
 # Clone o repositório
-$ git clone https://github.com/MOPDeveloper/AtomiKingdom.git
+$ git clone https://github.com/MOPDeveloper/The-Rise-of-Lequeleto.git
 
 # Abrir o projeto
 Abra a pasta clonada em seu editor de código favorito.
