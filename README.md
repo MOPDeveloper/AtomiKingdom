@@ -1,6 +1,6 @@
 # <p align="center">Projeto: The Rise of Lequeleto </p>
 
-## 1) Integrantes da `Equipe 7`:
+## 1) Integrantes da `Equipe`:
 <br>
 
 - André Campos
