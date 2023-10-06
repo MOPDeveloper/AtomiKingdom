@@ -1,4 +1,4 @@
-# <p align="center">Projeto: AtomiKingdom </p>
+# <p align="center">Projeto: The Rise of Lequeleto </p>
 
 ## 1) Integrantes da `Equipe 7`:
 <br>
